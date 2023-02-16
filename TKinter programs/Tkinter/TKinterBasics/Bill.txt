@@ -1,0 +1,23 @@
+Receipt Ref : BILL - 34466356		 12/08/2022
+Customer Name	:	VIBHOR DADA
+Items				Cost of Items
+Chicken Lollipop			0.0
+Chicken Hotdog				0.0
+Chicken Burger				80.0
+Chicken Roll				0.0
+Chicken 65					0.0
+Chicken Crispy				0.0
+Chicken Chilli				0.0
+Chicken Samosa				0.0
+Veg Puff					0.0
+Veg Hotdog					0.0
+Veg Burger					0.0
+Veg Roll					0.0
+Veg Manchurian				0.0
+Veg Crispy					180.0
+Veg Noodles					0.0
+Veg Samosa					0.0
+Paid Tax				40.8 Rs
+Service Charge				12 Rs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Total Cost				302.8 Rs
