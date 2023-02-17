@@ -3,7 +3,7 @@ import pyautogui as pg
 
 sleep(4)
 
-file = open("code.py","r")
+file = open("code.txt","r")
 data = file.read().split("\n")
 file.close()
 
