@@ -31,16 +31,16 @@
 
 
 
-# import os
-# from datetime import datetime
-# import time 
+import os
+from datetime import datetime
+import time 
 
-# while(True):
-#     os.system("cls")
-#     now = datetime.now()
-#     a = now.strftime("%I : %M : %S : %f %p")
-#     print(a)
-#     time.sleep(1)
+while(True):
+    os.system("cls")
+    now = datetime.now()
+    a = now.strftime("%I : %M : %S : %f %p")
+    print(a)
+    time.sleep(1)
 
 
 
