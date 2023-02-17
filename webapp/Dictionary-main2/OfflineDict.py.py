@@ -1,6 +1,7 @@
 import json
 from difflib import get_close_matches
 
+
 def get_words_capital_first_letter():
     caps = ['Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M']
     capitals_letters = []

@@ -1,9 +1,9 @@
 from time import sleep 
 import pyautogui as pg 
 
-sleep(3)
+sleep(4)
 
-file = open("data.txt","r")
+file = open("code.py","r")
 data = file.read().split("\n")
 file.close()
 
