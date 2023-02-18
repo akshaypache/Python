@@ -1,5 +1,0 @@
-
-
-# OUTPUT: 
-# Enter your age = 25
-# You are a adult
