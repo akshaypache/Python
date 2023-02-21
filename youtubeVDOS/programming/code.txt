@@ -20,7 +20,7 @@ screen_height = 600
 gameWindow = pygame.display.set_mode((screen_width, screen_height))
 
 # Game Title
-pygame.display.set_caption("Coders Home")
+pygame.display.set_caption("SNAKE GAME || TECH IN SECONDS")
 pygame.display.update()
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 55)
@@ -49,7 +49,7 @@ def gameloop():
     food_y = random.randint(60, screen_height -20)
     score = 0
     init_velocity = 4
-    snake_size = 30
+    snake_size = 10
     fps = 60   # fps = frames per second
     while not exit_game:
         if game_over:
