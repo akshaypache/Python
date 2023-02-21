@@ -9,5 +9,11 @@ f = io.StringIO()
 qr.print_ascii(out=f)
 f.seek(5)
 data = f.read()
-# data = data.replace("\xa0"," ")
-print(data)
+# print(data)
+
+data = data.split("\n")
+
+for i in data:
+    file = open("code.txt","a")
+    file.write(i)
+    file.close()
