@@ -1,3 +1,5 @@
+# TECH_IN_SECONDS
+
 # LETS CREATE QR CODE GENERATOR
 import qrcode  # Import the qrcode library
 import io

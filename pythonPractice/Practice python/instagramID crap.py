@@ -11,6 +11,8 @@ print('Following\t=',user.number_of_followings)
 print('Posts\t\t=',user.number_of_posts)
 print('Private\t\t=',user.is_private)
 print('Verified\t=',user.is_verified)
+print('Verified\t=',user.connected_fb_page)
+print('website\t=',user.website)
 print('\nBio: \n',user.biography)
 
 

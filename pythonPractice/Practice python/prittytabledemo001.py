@@ -29,15 +29,30 @@
 
 
 from prettytable import PrettyTable
-
-myTable = PrettyTable(["Student Name", "Class", "Section", "Percentage"])
-
-myTable.add_row(["saniya", "12th", "A", "91.08 %"])
-myTable.add_row(["Rashmi", "12th", "C", "63.5 %"])
-myTable.add_row(["sandip", "12th", "A", "90.23 %"])
-myTable.add_row(["shubhangi", "12th", "D", "92.7 %"])
-myTable.add_row(["achal", "12th", "A", "98.2 %"])
-myTable.add_row(["Raj", "12th", "B", "88.1 %"])
-myTable.add_row(["Ajay", "12th", "B", "95.0 %"])
-
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+myTable = PrettyTable(nums)
+for i in nums:
+    list = []
+    for j in nums:
+        list.append(i + j)
+    myTable.add_row(list)
 print(myTable)
+
+
+
+
+
+
+# from prettytable import PrettyTable
+
+# myTable = PrettyTable(["Student Name", "Class", "Section", "Percentage"])
+
+# myTable.add_row(["saniya", "12th", "A", "91.08 %"])
+# myTable.add_row(["Rashmi", "12th", "C", "63.5 %"])
+# myTable.add_row(["sandip", "12th", "A", "90.23 %"])
+# myTable.add_row(["shubhangi", "12th", "D", "92.7 %"])
+# myTable.add_row(["achal", "12th", "A", "98.2 %"])
+# myTable.add_row(["Raj", "12th", "B", "88.1 %"])
+# myTable.add_row(["Ajay", "12th", "B", "95.0 %"])
+
+# print(myTable)
