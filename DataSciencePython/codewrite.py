@@ -8,9 +8,6 @@ data = file.read().split("\n")
 file.close()
 
 for i in data:
-    pg.typewrite(i,0.08)
+    pg.typewrite(i)
     pg.hotkey("shift","enter")
-
-
-    
 
