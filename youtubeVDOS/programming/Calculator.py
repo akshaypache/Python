@@ -1,3 +1,5 @@
+# TECH_IN_SECONDS
+
 # Today We Are Going To Create Fully Function GUI Calculator Under 50 Lines of Code 
 from tkinter import *               # pip install tkinter
 

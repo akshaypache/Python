@@ -9,7 +9,7 @@ file = open("code.txt",'r')
 code = file.read()
 file.close()
 
-filename = "QrCodeGenerator.py"
+filename = "Calculator.py"
 code = headerMsg + "\n\n" + code
 file = open(filename,'w')
 file.close()
@@ -25,13 +25,15 @@ line = 0
 sleep(3)
 for ch in code:
     file = open(filename,"a")
-    # if ch == "\n":
-        # if line%22 == 21:
-            # for i in range(16):
-                # pg.scroll(-100)
-                # sleep(0.1)
-        # line = line + 1
+    ##############################################
+    if ch == "\n":
+        if line%22 == 21:
+            for i in range(16):
+                pg.scroll(-100)
+                sleep(0.1)
+        line = line + 1
+    ###############################################
     file.write(ch)
-    sleep(0.1)
+    sleep(0.17)
     file.close()
 
