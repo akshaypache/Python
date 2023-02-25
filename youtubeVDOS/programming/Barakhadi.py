@@ -1,3 +1,5 @@
+# TECH_IN_SECONDS
+
 # Today We Are Going To Print Hindi Barakhadi Using Prettytable In PYTHON
 
 # import the PrettyTable library
