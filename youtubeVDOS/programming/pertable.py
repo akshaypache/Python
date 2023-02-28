@@ -12,7 +12,7 @@ mainframe.pack()
 def info(event):
     outputWindow = tk.Tk()
     outputWindow.configure(bg="grey7")
-    outputWindow.resizable(0,0)
+    # outputWindow.resizable(0,0)
 
     def des():
         outputWindow.destroy()
@@ -25,11 +25,19 @@ def info(event):
             EleInfo = ele.split(",")
             list = ["Atomic number", "Relative atomic mass", "Standard state", "Classification", "Group", "Group name", "Period", "Block", "Shell structure", "CAS Registry"]
             
-            for i in range(10):
-                outputWindow.title(f"This information about {EleInfo[0]}")
+            eleBtn = tk.Button(outputWindow,
+                                text= EleInfo[0].upper(),
+                                bg="grey7",
+                                fg="green",
+                                font=("Arial", 20,"bold"),
+                                height=2,
+                                width=60)
+            eleBtn.grid(row=0,column=0,columnspan=2)
 
+            for i in range(1,11):
+                outputWindow.title(f"This information about {EleInfo[0]}")
                 b1Btn = tk.Button(outputWindow,
-                                text= list[i].upper(),
+                                text= list[i-1].upper(),
                                 bg="grey7",
                                 fg="white",
                                 font=("Arial", 20,"bold"),
@@ -38,7 +46,7 @@ def info(event):
                 b1Btn.grid(row=i,column=0)
                 
                 b2Btn = tk.Button(outputWindow,
-                                text= EleInfo[i+1],
+                                text= EleInfo[i],
                                 bg="grey7",
                                 fg="white",
                                 font=("Arial", 20,"bold"),
@@ -52,40 +60,61 @@ def info(event):
                                 fg="red",
                                 font=("Arial", 20,"bold"),
                                 height=2,
-                                width=30,
+                                width=60,
                                 command=des)
-            bkBtn.grid(row=10,column=0,columnspan=2)
+            bkBtn.grid(row=11,column=0,columnspan=2)
     outputWindow.mainloop()
+
+a = 0
+def myinfo():
+    global a
+    if(a%2==0):
+        ttlBtn.configure(text="Created By:\nAadesh Lokhande",font=("Arial", 30,"bold"))
+        a+=1
+    else:
+        ttlBtn.configure(text="Periodic Table",font=("Arial", 30,"bold"))
+        a+=1
 
 
 for element in elements:
-    button = tk.Button(
-        mainframe,
-        text=f"{element['symbol']}\n{element['name']}",
-        width=11,
-        height=3,
-        bg="blue",
-        fg = "white",
-        font=("Arial", 10,"bold"),
-        borderwidth=1,
-        relief="solid",
-    )
-    button.grid(row=element["row"], column=element["col"])
-    button.bind("<Button-1>", info)
+    for ele in elementInfo:
+        ele = ele.split(",")
+        if(ele[0]==element["name"]):
+            button = tk.Button(
+                mainframe,
+                text=f"{element['symbol']}\n{element['name']}",
+                width=11,
+                height=3,
+                font=("Arial", 10,"bold"),
+                borderwidth=1,
+                relief="solid",
+            )
+            block = ele[-3].lower().strip()
+            if(block=="block p"):
+                button.configure(bg="yellow",fg = "black")
+            elif(block=="block d"):
+                button.configure(bg="blue",fg = "white")
+            elif(block=="block s"):
+                button.configure(bg="red",fg = "white")
+            elif(block=="block f"):
+                button.configure(bg="green",fg = "white")
+            
+            button.grid(row=element["row"], column=element["col"])
+            button.bind("<Button-1>", info)
 
-button = tk.Button(
+
+
+ttlBtn = tk.Button(
         mainframe,
-        text="Periodic Table",
+        text="Periodic Table".upper(),
         width=20,
         height=2,
         bg="grey7",
         fg = "white",
         font=("Arial", 30,"bold"),
-        borderwidth=1,
-        relief="solid",
-    )
-button.grid(row=1, column=5,columnspan=7,rowspan=3)
-# button.bind("<Button-1>", infomy)
+        command=myinfo,
+        relief="solid")
+ttlBtn.grid(row=1, column=5,columnspan=7,rowspan=3)
 
 
 root.mainloop()
