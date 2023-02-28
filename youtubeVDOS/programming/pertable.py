@@ -26,7 +26,7 @@ def info(event):
             list = ["Atomic number", "Relative atomic mass", "Standard state", "Classification", "Group", "Group name", "Period", "Block", "Shell structure", "CAS Registry"]
             
             eleBtn = tk.Button(outputWindow,
-                                text= EleInfo[0].upper(),
+                                text= f"{EleInfo[0].upper()}",
                                 bg="grey7",
                                 fg="green",
                                 font=("Arial", 20,"bold"),
@@ -46,9 +46,10 @@ def info(event):
                 b1Btn.grid(row=i,column=0)
                 
                 b2Btn = tk.Button(outputWindow,
-                                text= EleInfo[i],
+                                text= f"{EleInfo[i]}",
                                 bg="grey7",
                                 fg="white",
+                                justify="right",
                                 font=("Arial", 20,"bold"),
                                 height=1,
                                 width=30)
@@ -56,8 +57,9 @@ def info(event):
 
             bkBtn = tk.Button(outputWindow,
                                 text= "Back",
-                                bg="grey7",
+                                justify="left",
                                 fg="red",
+                                bg="grey7",
                                 font=("Arial", 20,"bold"),
                                 height=2,
                                 width=60,
@@ -90,13 +92,13 @@ for element in elements:
                 relief="solid",
             )
             block = ele[-3].lower().strip()
-            if(block=="block p"):
+            if(block=="p"):
                 button.configure(bg="yellow",fg = "black")
-            elif(block=="block d"):
+            elif(block=="d"):
                 button.configure(bg="blue",fg = "white")
-            elif(block=="block s"):
+            elif(block=="s"):
                 button.configure(bg="red",fg = "white")
-            elif(block=="block f"):
+            elif(block=="f"):
                 button.configure(bg="green",fg = "white")
             
             button.grid(row=element["row"], column=element["col"])

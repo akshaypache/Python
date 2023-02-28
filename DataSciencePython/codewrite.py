@@ -1,6 +1,5 @@
 from time import sleep 
 import pyautogui as pg 
-
 sleep(4)
 
 file = open("code.txt","r")
@@ -12,3 +11,12 @@ for i in data:
     pg.hotkey("shift","enter")
 
 
+
+
+# for i in range(7):
+#     for j in range(7):
+#         if abs(i-3) + abs(j-3) <= 3:
+#             print(5 - abs(i-3) - abs(j-3), end="")
+#         else:
+#             print(end=" ")
+#     print()
