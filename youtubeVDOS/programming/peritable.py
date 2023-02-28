@@ -1,147 +1,91 @@
 import tkinter as tk
+from elementsData import elementInfo,elements
 
 root = tk.Tk()
 root.title("Periodic Table")
 root.configure(bg="grey7")
 root.resizable(0,0)
-# Define elements and their properties
-elements = [
-    {"symbol": "H", "name": "Hydrogen", "row": 1, "col": 1},
-    {"symbol": "He", "name": "Helium", "row": 1, "col": 18},
-    {"symbol": "Li", "name": "Lithium", "row": 2, "col": 1},
-    {"symbol": "Be", "name": "Beryllium", "row": 2, "col": 2},
-    {"symbol": "B", "name": "Boron", "row": 2, "col": 13},
-    {"symbol": "C", "name": "Carbon", "row": 2, "col": 14},
-    {"symbol": "N", "name": "Nitrogen", "row": 2, "col": 15},
-    {"symbol": "O", "name": "Oxygen", "row": 2, "col": 16},
-    {"symbol": "F", "name": "Fluorine", "row": 2, "col": 17},
-    {"symbol": "Ne", "name": "Neon", "row": 2, "col": 18},
-    {"symbol": "Na", "name": "Sodium", "row": 3, "col": 1},
-    {"symbol": "Mg", "name": "Magnesium", "row": 3, "col": 2},
-    {"symbol": "Al", "name": "Aluminum", "row": 3, "col": 13},
-    {"symbol": "Si", "name": "Silicon", "row": 3, "col": 14},
-    {"symbol": "P", "name": "Phosphorus", "row": 3, "col": 15},
-    {"symbol": "S", "name": "Sulfur", "row": 3, "col": 16},
-    {"symbol": "Cl", "name": "Chlorine", "row": 3, "col": 17},
-    {"symbol": "Ar", "name": "Argon", "row": 3, "col": 18},
-    {"symbol": "K", "name": "Potassium", "row": 4, "col": 1},
-    {"symbol": "Ca", "name": "Calcium", "row": 4, "col": 2},
-    {"symbol": "Sc", "name": "Scandium", "row": 4, "col": 3},
-    {"symbol": "Ti", "name": "Titanium", "row": 4, "col": 4},
-    {"symbol": "V", "name": "Vanadium", "row": 4, "col": 5},
-    {"symbol": "Cr", "name": "Chromium", "row": 4, "col": 6},
-    {"symbol": "Mn", "name": "Manganese", "row": 4, "col": 7},
-    {"symbol": "Fe", "name": "Iron", "row": 4, "col": 8},
-    {"symbol": "Co", "name": "Cobalt", "row": 4, "col": 9},
-    {"symbol": "Ni", "name": "Nickel", "row": 4, "col": 10},
-    {"symbol": "Cu", "name": "Copper", "row": 4, "col": 11},
-    {"symbol": "Zn", "name": "Zinc", "row": 4, "col": 12},
-    {"symbol": "Ga", "name": "Gallium", "row": 4, "col": 13},
-    {"symbol": "Ge", "name": "Germanium", "row": 4, "col": 14},
-    {"symbol": "As", "name": "Arsenic", "row": 4, "col": 15},
-    {"symbol": "Se", "name": "Selenium", "row": 4, "col": 16},
-    {"symbol": "Br", "name": "Bromine", "row": 4, "col": 17},
-    {"symbol": "Kr", "name": "Krypton", "row": 4, "col": 18},
-    {"symbol": "Rb", "name": "Rubidium", "row": 5, "col": 1},
-    {"symbol": "Sr", "name": "Strontium", "row": 5, "col": 2},
-    {"symbol": "Y", "name": "Yttrium", "row": 5, "col": 3},
-    {"symbol": "Zr", "name": "Zirconium", "row": 5, "col": 4},
-    {"symbol": "Nb", "name": "Niobium", "row": 5, "col": 5},
-    {"symbol": "Mo", "name": "Molybdenum", "row": 5, "col": 6},
-    {"symbol": "Tc", "name": "Technetium", "row": 5, "col": 7},
-    {"symbol": "Ru", "name": "Ruthenium", "row": 5, "col": 8},
-    {"symbol": "Rh", "name": "Rhodium", "row": 5, "col": 9},
-    {"symbol": "Pd", "name": "Palladium", "row": 5, "col": 10},
-    {"symbol": "Ag", "name": "Silver", "row": 5, "col": 11},
-    {"symbol": "Cd", "name": "Cadmium", "row": 5, "col": 12},
-    {"symbol": "In", "name": "Indium", "row": 5, "col": 13},
-    {"symbol": "Sn", "name": "Tin", "row": 5, "col": 14},
-    {"symbol": "Sb", "name": "Antimony", "row": 5, "col": 15},
-    {"symbol": "Te", "name": "Tellurium", "row": 5, "col": 16},
-    {"symbol": "I", "name": "Iodine", "row": 5, "col": 17},
-    {"symbol": "Xe", "name": "Xenon", "row": 5, "col": 18},
-    {"symbol": "Cs", "name": "Cesium", "row": 6, "col": 1},
-    {"symbol": "Ba", "name": "Barium","row": 6, "col": 2},
-    {"symbol": "La", "name": "Lanthanum", "row": 6, "col": 3},
-    {"symbol": "Ce", "name": "Cerium", "row": 9, "col": 4},
-    {"symbol": "Pr", "name": "Praseodymium", "row": 9, "col": 5},
-    {"symbol": "Nd", "name": "Neodymium", "row": 9, "col": 6},
-    {"symbol": "Pm", "name": "Promethium", "row": 9, "col": 7},
-    {"symbol": "Sm", "name": "Samarium", "row": 9, "col": 8},
-    {"symbol": "Eu", "name": "Europium", "row": 9, "col": 9},
-    {"symbol": "Gd", "name": "Gadolinium", "row": 9, "col": 10},
-    {"symbol": "Tb", "name": "Terbium", "row": 9, "col": 11},
-    {"symbol": "Dy", "name": "Dysprosium", "row": 9, "col": 12},
-    {"symbol": "Ho", "name": "Holmium", "row": 9, "col": 13},
-    {"symbol": "Er", "name": "Erbium", "row": 9, "col": 14},
-    {"symbol": "Tm", "name": "Thulium", "row": 9, "col": 15},
-    {"symbol": "Yb", "name": "Ytterbium", "row": 9, "col": 16},
-    {"symbol": "Lu", "name": "Lutetium", "row": 9, "col": 17},
-    {"symbol": "Hf", "name": "Hafnium", "row": 6, "col": 4},
-    {"symbol": "Ta", "name": "Tantalum", "row": 6, "col": 5},
-    {"symbol": "W", "name": "Tungsten", "row": 6, "col": 6},
-    {"symbol": "Re", "name": "Rhenium", "row": 6, "col": 7},
-    {"symbol": "Os", "name": "Osmium", "row": 6, "col": 8},
-    {"symbol": "Ir", "name": "Iridium", "row": 6, "col": 9},
-    {"symbol": "Pt", "name": "Platinum", "row": 6, "col": 10},
-    {"symbol": "Au", "name": "Gold", "row": 6, "col": 11},
-    {"symbol": "Hg", "name": "Mercury", "row": 6, "col": 12},
-    {"symbol": "Tl", "name": "Thallium", "row": 6, "col": 13},
-    {"symbol": "Pb", "name": "Lead", "row": 6, "col": 14},
-    {"symbol": "Bi", "name": "Bismuth", "row": 6, "col": 15},
-    {"symbol": "Po", "name": "Polonium", "row": 6, "col": 16},
-    {"symbol": "At", "name": "Astatine", "row": 6, "col": 17},
-    {"symbol": "Rn", "name": "Radon", "row": 6, "col": 18},
-    {"symbol": "Fr", "name": "Francium", "row": 7, "col": 1},
-    {"symbol": "Ra", "name": "Radium", "row": 7, "col": 2},
-    {"symbol": "Ac", "name": "Actinium", "row": 7, "col": 3},
-    {"symbol": "Th", "name": "Thorium", "row": 10, "col": 4},
-    {"symbol": "Pa", "name": "Protactinium", "row": 10, "col": 5},
-    {"symbol": "U", "name": "Uranium", "row": 10, "col": 6},
-    {"symbol": "Np", "name": "Neptunium", "row": 10, "col": 7},
-    {"symbol": "Pu", "name": "Plutonium", "row": 10, "col": 8},
-    {"symbol": "Am", "name": "Americium", "row": 10, "col": 9},
-    {"symbol": "Cm", "name": "Curium", "row": 10, "col": 10},
-    {"symbol": "Bk", "name": "Berkelium", "row": 10, "col": 11},
-    {"symbol": "Cf", "name": "Californium", "row": 10, "col": 12},
-    {"symbol": "Es", "name": "Einsteinium", "row": 10, "col": 13},
-    {"symbol": "Fm", "name": "Fermium", "row": 10, "col": 14},
-    {"symbol": "Md", "name": "Mendelevium", "row": 10, "col": 15},
-    {"symbol": "No", "name": "Nobelium", "row": 10, "col": 16},
-    {"symbol": "Lr", "name": "Lawrencium", "row": 10, "col": 17},
-    {"symbol": "Rf", "name": "Rutherfordium", "row": 7, "col": 4},
-    {"symbol": "Db", "name": "Dubnium", "row": 7, "col": 5},
-    {"symbol": "Sg", "name": "Seaborgium", "row": 7, "col": 6},
-    {"symbol": "Bh", "name": "Bohrium", "row": 7, "col": 7},
-    {"symbol": "Hs", "name": "Hassium", "row": 7, "col": 8},
-    {"symbol": "Mt", "name": "Meitnerium", "row": 7, "col": 9},
-    {"symbol": "Ds", "name": "Darmstadtium", "row": 7, "col": 10},
-    {"symbol": "Rg", "name": "Roentgenium", "row": 7, "col": 11},
-    {"symbol": "Cn", "name": "Copernicum", "row": 7, "col": 12},
-    {"symbol": "Nh", "name": "Nihonium", "row": 7, "col": 13},
-    {"symbol": "Fl", "name": "Flerovium", "row": 7, "col": 14},
-    {"symbol": "Mc", "name": "Moscovium", "row": 7, "col": 15},
-    {"symbol": "Lv", "name": "Livermorium", "row": 7, "col": 16},
-    {"symbol": "Ts", "name": "Tennessine", "row": 7, "col": 17},
-    {"symbol": "Og", "name": "Oganesson", "row": 7, "col": 18},
-    ]
+
+mainframe = tk.Frame(root,bg="grey7")
+mainframe.pack()
+
+def info(event):
+    outputWindow = tk.Tk()
+    outputWindow.configure(bg="grey7")
+    outputWindow.resizable(0,0)
+
+    def des():
+        outputWindow.destroy()
 
 
-# Create a grid of buttons for each element
+    text = event.widget.cget("text").split("\n")[1]
+    for ele in elementInfo:
+        var = ele.split(",")
+        if text in var[0]:
+            EleInfo = ele.split(",")
+            list = ["Atomic number", "Relative atomic mass", "Standard state", "Classification", "Group", "Group name", "Period", "Block", "Shell structure", "CAS Registry"]
+            
+            for i in range(10):
+                outputWindow.title(f"This information about {EleInfo[0]}")
+
+                b1Btn = tk.Button(outputWindow,
+                                text= list[i].upper(),
+                                bg="grey7",
+                                fg="white",
+                                font=("Arial", 20,"bold"),
+                                height=1,
+                                width=30)
+                b1Btn.grid(row=i,column=0)
+                
+                b2Btn = tk.Button(outputWindow,
+                                text= EleInfo[i+1],
+                                bg="grey7",
+                                fg="white",
+                                font=("Arial", 20,"bold"),
+                                height=1,
+                                width=30)
+                b2Btn.grid(row=i,column=1)
+
+            bkBtn = tk.Button(outputWindow,
+                                text= "Back",
+                                bg="grey7",
+                                fg="red",
+                                font=("Arial", 20,"bold"),
+                                height=2,
+                                width=30,
+                                command=des)
+            bkBtn.grid(row=10,column=0,columnspan=2)
+    outputWindow.mainloop()
+
+
 for element in elements:
     button = tk.Button(
-        root,
-        text=element["symbol"] + "\n" + element["name"],
-        padx=5,
-        pady=10,
-        width=10,
+        mainframe,
+        text=f"{element['symbol']}\n{element['name']}",
+        width=11,
         height=3,
-        bg="cadet blue",
+        bg="blue",
         fg = "white",
         font=("Arial", 10,"bold"),
-        borderwidth=3,
-        relief="ridge"
+        borderwidth=1,
+        relief="solid",
     )
     button.grid(row=element["row"], column=element["col"])
+    button.bind("<Button-1>", info)
+
+button = tk.Button(
+        mainframe,
+        text="Periodic Table",
+        width=20,
+        height=2,
+        bg="grey7",
+        fg = "white",
+        font=("Arial", 30,"bold"),
+        borderwidth=1,
+        relief="solid",
+    )
+button.grid(row=1, column=5,columnspan=7,rowspan=3)
+# button.bind("<Button-1>", infomy)
+
 
 root.mainloop()
