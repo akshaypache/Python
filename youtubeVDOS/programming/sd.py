@@ -5,4 +5,3 @@ for i in range(32):
     coloum3 = f"'{chr(ascii+64)}'\t:=>\t{ascii+64}"
     print(f"|    {coloum1}    |    {coloum2}    |    {coloum3}\t|")
     ascii = ascii+1
-
