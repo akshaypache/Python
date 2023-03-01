@@ -12,7 +12,7 @@ mainframe.pack()
 def info(event):
     outputWindow = tk.Tk()
     outputWindow.configure(bg="grey7")
-    # outputWindow.resizable(0,0)
+    outputWindow.resizable(0,0)
 
     def des():
         outputWindow.destroy()
@@ -72,10 +72,9 @@ def myinfo():
     global a
     if(a%2==0):
         ttlBtn.configure(text="Created By:\nAadesh Lokhande",font=("Arial", 30,"bold"))
-        a+=1
     else:
         ttlBtn.configure(text="Periodic Table",font=("Arial", 30,"bold"))
-        a+=1
+    a+=1
 
 
 for element in elements:
@@ -114,6 +113,8 @@ ttlBtn = tk.Button(
         bg="grey7",
         fg = "white",
         font=("Arial", 30,"bold"),
+        activebackground="grey7",
+        activeforeground="cadet blue",
         command=myinfo,
         relief="solid")
 ttlBtn.grid(row=1, column=5,columnspan=7,rowspan=3)
