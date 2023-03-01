@@ -2,14 +2,8 @@ import ast
 input_str = input("Enter a events list = ")
 inputList = ast.literal_eval(input_str)
 
-column = inputList[0]
-row = inputList[1]
+lst = inputList[0]
+k = inputList[1]
 
-for i in range(column):
-    outputlist = []
-    for j in range(row):
-        if(i==0 or j==0 or i==column-1 or j==row-1):
-            outputlist.append("1")
-        else:
-            outputlist.append("0")
-    print(outputlist)
+for i in range(0, len(lst), k):
+    print(lst[i:i+k])
