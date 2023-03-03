@@ -53,3 +53,90 @@
 # print(a)
 # a.append("nimbu")
 # print(a)
+
+# =====================================================
+# =====================================================
+
+# operator
+
+# arithmatic
+# a = 10
+# b = 20
+# print(a + b)
+# print(a - b)
+# print(a * b)
+# print(a / b)
+# print(a % b)
+# print(a ** b)
+# print(a // b)    # 3 // 2 = 1
+
+# relation - comparison
+# a = 10
+# b = 20
+# print(a < b)
+# print(a > b)
+# print(a <= b)
+# print(a >= b)
+# print(a == b)
+# print(a != b)
+
+
+# logical : and, or , not
+# and  - ziddi operator
+# or - gareeb dil wala
+# not - ulte khopdiwala
+
+# assignment
+# a = 10
+# b = a
+# a = 12
+# print(a)                    # 10
+# a += 2
+# print(a)                    # 12
+# a -= 2
+# print(a)                     # 8
+# a *= 2
+# print(a)                    # 20
+# a /= 2
+# print(a)                    # 5
+# a %= 2
+# print(a)                    # 0
+# a **= 2
+# print(a)                    # 100
+# a //= 2
+# print(a)                    # 5
+
+
+
+# --------------------------
+# a = [12,23,43,54,65,76,57,45,354]
+# print(485 in a)
+
+
+# =======================================
+
+# a = [12,32,54,76]
+# print(dir())
+
+# a = "aadESh lokhANde is a good bOy"
+# print(a.title())
+# print(a.capitalize())
+# print(a.upper())
+# print(a.lower())
+# print(a)
+# print(a.swapcase())
+# print(a.split())
+# print(a.replace("o","0"))
+
+# ===============================
+# """
+# asdasd
+# asdasdas
+# asdads
+# """
+#
+# 103123123789
+# a = [12,43,54636,46]
+# print(a)
+
+
