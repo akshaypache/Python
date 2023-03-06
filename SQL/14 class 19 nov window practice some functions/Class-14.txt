@@ -1,0 +1,139 @@
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- Find day wise total sales and rank the days according to the sales.
+-- On which day the sale is highest and the lowest.*
+
+select *, rank() over(order by y.total_sales desc) as rank_
+from(
+select x.day_, sum(x.sales) as total_sales
+from (
+select extract(day from b.time) as day_, count(*)*sum(a.price_unit) as sales
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by b.time ) x
+group by x.day_) y;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select y.dt, y.s, avg(y.s) over(rows between unbounded preceding and unbounded following ) as mv
+from(
+select x.dt, sum(x.amount_usd) as s                                                                                [Rows between unbounded preceding and unbounded following) explaning
+from (
+select *,extract(month from occurred_at) as mnth,
+extract(day from occurred_at) as dt
+from tutorial.orders) x
+group by x.dt
+order by x.dt) y;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select employee_id, department_id, salary, hire_date,
+first_value(employee_id) over(partition by department_id order by salary desc rows between unbounded preceding
+and unbounded following) as first_e,                                                                                              [first_value and last_value] explaining
+last_value(employee_id) over(partition by department_id order by salary desc rows between unbounded preceding
+and unbounded following) as last_e
+from sessionwithsumit.employees_data;
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the date of first hierd and last hired employee under each department
+-- department_id, first_hire_date, last_hire_date
+
+select x.department_id, max(x.first_hire_date), max(x.last_hire_date)
+from (
+select department_id, employee_id, hire_date,
+first_value(hire_date) over(partition by department_id order by hire_date rows between unbounded preceding 
+and unbounded following) as first_hire_date,
+last_value(hire_date) over(partition by department_id order by hire_date rows between unbounded preceding 
+and unbounded following) as last_hire_date
+from sessionwithsumit.employees_data) x 
+group by x.department_id;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from tutorial.orders;
+
+select *, ntile(4) over(order by amount_usd) as quantile
+from tutorial.orders;
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- Find the number of orders placed in 4th quntile of the total order value transaction_id wise.
+
+select *
+from (
+select *, ntile(4) over(order by x.total_order_value) as q
+from (
+select b.transaction_id, count(*)*sum(a.price_unit) as total_order_value
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by b.transaction_id) x) y 
+where y.q = 4;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+select * , lag(amount_usd,2) over(order by occurred_at) as l
+from tutorial.orders
+order by occurred_at;
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Find day wise total sales(sum(Quantity)*sum(amount_used))
+
+select *, lag(x.total_sales,1) over(order by x.d asc), lag(x.total_sales,1) over(order by x.d asc) - x.total_sales as diff
+from (
+select extract(day from occurred_at) as d , sum(quantity)*sum(amount_usd) as total_sales
+from tutorial.orders 
+group by extract(day from occurred_at)
+order by extract(day from occurred_at) asc) x;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select *
+from tutorial.dc_bikeshare_q1_2012
+where start_terminal = 31000
+order by start_time;
+
+
+
+-- Find the difference between two rides.
+
+select start_terminal, duration_seconds, lag(duration_seconds,1) over(order by start_time) as l
+,duration_seconds-lag(duration_seconds,1) over(order by start_time) as diff
+from tutorial.dc_bikeshare_q1_2012
+where start_terminal = 31000;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- For the dataset, write a query to add the two columns cum_hrs_studied and total_hrs_studied. Each
+-- row in cum_hrs_studied should display the cumulative sum of hours studied per school. Each row in
+-- the total_hrs_studied will display total hours studied per school. Order the data in the ascending
+-- order of student id
+
+select * from tutorial.sat_scores;
+
+select school,hrs_studied,
+sum(hrs_studied) over(partition by school) as school_wise_total,
+sum(hrs_studied) over(rows between unbounded preceding and unbounded following) as total
+from tutorial.sat_scores;

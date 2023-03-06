@@ -1,0 +1,96 @@
+-- Given the employees_data, find number of employees assigned to a manager. Find the manager name
+-- with highest number of employees assigned to him/her.
+
+select * from sessionwithsumit.employees_data;
+
+select b.first_name, count(*)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.employees_data b 
+on a.manager_id = b.employee_id
+group by b.first_name 
+order by count(*) desc;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from benn.college_football_players;
+select * from benn.college_football_teams
+
+-- Find the player name who has played for maximum number of conferences
+
+select b.player_name, count(*)
+from benn.college_football_teams a 
+inner join benn.college_football_players b 
+on a.school_name = b.school_name
+group by b.player_name
+order by count(*) desc;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find those conferences where the avg_weight was more than 210. Ouput the result
+-- in descending order of avg_weight.
+
+select a.conference, avg(b.weight)
+from benn.college_football_teams a 
+inner join benn.college_football_players b 
+on a.school_name = b.school_name
+group by a.conference
+having avg(b.weight)>210
+order by avg(b.weight) desc;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find top 3 conferences with highest avg BMI(weight/(height)*(height))
+
+select a.conference, avg(b.weight/(b.height*b.height)) as avg_bmi
+from benn.college_football_teams a 
+inner join benn.college_football_players b 
+on a.school_name = b.school_name
+group by a.conference ;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- Find the product which doesn't sell a single unit.
+
+select *
+from tutorial.excel_sql_inventory_data a 
+left join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+where b.transaction_id is null;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find product wise number of units sold. Also include those products for which no units were sold
+-- Order the result in descending order of units sold.
+
+select a.product_name, count(b.transaction_id)
+from tutorial.excel_sql_inventory_data a 
+left join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by a.product_name
+order by 2 desc;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find total sales generated per product. Find the name of product with highest total sales.
+
+select a.product_name, count(*)
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by a.product_name;
+
+
+
+
+select * 
+from tutorial.excel_sql_inventory_data
+where price_unit>2.5
+UNION ALL
+select *
+from tutorial.excel_sql_inventory_data
+where product_type = 'dry_goods';

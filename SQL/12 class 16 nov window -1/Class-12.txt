@@ -1,0 +1,109 @@
+select * from sessionwithsumit.employees_data;
+
+-- Find the following result
+-- Employee_id, First_Name, Salary, Department_id, avg_dept_salary
+
+select a.employee_id, a.first_name, a.salary, a.department_id, b.avg_dept_sal                                          (join method)
+from sessionwithsumit.employees_data a 
+left join 
+(select department_id, avg(salary) as avg_dept_sal
+from sessionwithsumit.employees_data
+group by department_id) b 
+on a.department_id = b.department_id;
+
+
+
+select employee_id, first_name, salary, department_id,                                                                (window method) 
+avg(salary) over(partition by department_id) as avg_dept_sal
+from sessionwithsumit.employees_data
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Find the number of employees who are earning more than their departments avg_salary
+
+select count(*)
+from (
+select employee_id, first_name, salary, department_id, 
+avg(salary) over(partition by department_id) as avg_dept_sal
+from sessionwithsumit.employees_data) a 
+where a.salary>a.avg_dept_sal;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- If a department is having less than 2 employees then we call that department as 'dep-3'
+-- if the number of employees are more than equals to 2 and less than 10, then 'dep-2'
+-- if more than equals to 10, then 'dep-1'
+-- Find the number of employees working in each 'dep'
+
+select y.dep_level, count(*)
+from (
+select *,
+case 
+  when x.cnt_dept<2 then 'dep-3'
+  when x.cnt_dept>=2 and x.cnt_dept<10 then 'dep-2'
+  else 'dep-1'
+end as dep_level
+from 
+(select *, count(*) over(partition by department_id) as cnt_dept
+from sessionwithsumit.employees_data) x) y
+group by y.dep_level
+order by count(*) desc;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Find how many employees are there who earn 5000 less than the maximum salary of their department
+
+select count(*)
+from (
+select *, 
+max(salary) over(partition by department_id) as max_dept_sal
+from sessionwithsumit.employees_data) x 
+where (x.max_dept_sal - x.salary)>5000;
+
+
+select employee_id, first_name, salary, department_id, 
+avg(salary) over(partition by department_id order by salary desc) as avg_dept_sal                                     example of (window function with order by clause)
+from sessionwithsumit.employees_data;
+
+select employee_id, first_name, salary, department_id, 
+row_number() over(partition by department_id order by salary desc) as rn
+from sessionwithsumit.employees_data;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+-- Find the first  in each department according to the day they joined
+
+select *
+from (
+select x.employee_id, x.first_name, x.salary, x.department_id, x.day, 
+row_number() over(partition by department_id order by x. day) as rn
+from (
+select *, extract(day from hire_date) as day from sessionwithsumit.employees_data) x) y 
+where rn = 1;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+select employee_id, first_name, salary, department_id, 
+row_number()over(partition by department_id order by salary desc) as rn,                                                                example of (row_number , rank, dense_rank)
+rank() over(partition by department_id order by salary desc) as r_,
+dense_rank() over(partition by department_id order by salary desc) as d_r
+from sessionwithsumit.employees_data
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Among all the employees who are earning highest in their department, how many of them are managers?
+
+select * 
+from (
+select employee_id, first_name, salary, department_id, manager_id,
+rank() over(partition by department_id order by salary desc) as r_
+from sessionwithsumit.employees_data) x 
+where x.r_ =1
+and x.employee_id in (select manager_id
+from sessionwithsumit.employees_data);

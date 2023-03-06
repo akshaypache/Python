@@ -1,0 +1,130 @@
+select * from sessionwithsumit.employees_data;
+
+-- Select the employees in the following format
+-- Full_Name | email_id(lower(email)_year(hire_date)_first two character of job_id@abc.com)|
+-- salary | Department_name
+
+select concat(a.first_name , ' ', a.last_name) as full_name,
+concat(lower(a.email),'_',extract(year from a.hire_date),'_',lower(split_part(a.job_id, '_',1)),'@abc.com' ),
+a.salary, b.department_name
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id;
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- There is a rumor in the organisation that the attrition rate for the third highest paid employee(in a department) is very high because
+-- they feel like, they are not getting enough paid. In order to find out all these employees, the HR team wants you to get them the following report
+-- For all employees with 3rd highest salary in the department.
+-- Employee Name | Salary | Difference from the 2nd highest salary in the department.
+
+select x.employee_id, x.full_name, x.department_id, x.salary, (x.two_sal - x.salary) as diff_sal
+from (
+select employee_id, concat(first_name, ' ', last_name) as full_name, rank() over(partition by department_id order by salary desc) as rnk,
+department_id,salary,
+lag(salary) over(partition by department_id order by salary desc) as two_sal
+from sessionwithsumit.employees_data) x
+where x.rnk =3;
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- As we can see that there are few employees in various department who are having salary more than 1000 less than the second highest earning employee
+-- Do this exercise to find how the 4th highest earning employee and the salary they are earning less than the third highest earning employee
+-- Now if the compnay decides to increase the salaries of all those employees who are earning 1000 less than the 3rd higesht then 
+-- what additional cost the company as to bear.
+
+select sum(y.diff_sal)
+from (
+select x.employee_id, x.full_name, x.department_id, x.salary, (x.two_sal - x.salary) as diff_sal
+from (
+select employee_id, concat(first_name, ' ', last_name) as full_name, rank() over(partition by department_id order by salary desc) as rnk,
+department_id,salary,
+lag(salary) over(partition by department_id order by salary desc) as two_sal
+from sessionwithsumit.employees_data) x
+where x.rnk =4) y 
+where y.diff_sal>1000;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- There is rumor in the compnay that all those employees with salary less than their department avg_salary is willing to leave the compnay
+-- In order to retain all those employees, the company has decided to provide an additional increment on their current salary based on the number of
+-- year they are working with the company.
+-- if nod<=10: 2%
+-- if nod >10 and nod<=40: 5%
+-- if nod>40 and nod>70: 10%
+-- else: 15%
+
+-- AFter providing all the increment, how much additional total salary the company has to delivery(previous total salary- cureent total salary)
+-- max(hire_date)
+
+select max(hire_date)
+from sessionwithsumit.employees_data;
+
+select sum(y.new_salary)- sum(y.salary) as additional_cost
+from (
+select *,
+case 
+  when x.nod<=10 then x.salary*1.02
+  when x.nod>10 and x.nod<=40 then x.salary*1.05
+  when x.nod>40 and x.nod<=70 then x.salary*1.10
+  else x.salary*1.15
+end as new_salary
+from (
+select * , avg(salary) over(partition by department_id) as avg_dept_sal,
+date_part('day', '1987-10-01 00:00:00'-hire_date) as nod
+from sessionwithsumit.employees_data) x 
+where x.salary<x.avg_dept_sal) y;
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- Find which day of the week get's maximum order value?
+
+select extract(dow from b.time), sum(a.price_unit)
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by 1
+order by 2 desc;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the difference in the number of days between the first order and the last order of each product.
+
+select x.product_id, date_part('day', max(x.l_o_t)-max(x.f_o_t)) as number_of_days
+from (
+select *,
+first_value(time) over(partition by product_id order by time rows between unbounded preceding and unbounded following) as f_o_t,
+last_value(time) over(partition by product_id order by time rows between unbounded preceding and unbounded following) as l_o_t
+from tutorial.excel_sql_transaction_data) x 
+group by x.product_id;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- A product is considered as waste if it has not been ordered for more than 2 days.
+-- Find the product wise count of inventory for such products which are needed to be disgraded.
+
+select max(time) from tutorial.excel_sql_transaction_data
+-- 2016-01-08 19:59:51
+select product_name, current_inventory
+from tutorial.excel_sql_inventory_data
+where product_id in (
+select x.product_id
+from (
+select *, 
+last_value(time) over(partition by product_id order by time rows between unbounded preceding and unbounded following) as l_o_t
+from tutorial.excel_sql_transaction_data) x
+group by x.product_id
+having date_part('day', '2016-01-08 19:59:51'- max(x.l_o_t))>=2 );
+

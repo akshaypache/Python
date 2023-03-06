@@ -1,0 +1,189 @@
+--- class - 5 class deck
+
+-- caselet = 1
+
+--question - 1 
+select * from tutorial.oscar_nominees;
+
+--question - 2 
+select distinct year 
+from tutorial.oscar_nominees
+order by 1 ;
+
+-- question - 3
+select * 
+from tutorial.oscar_nominees 
+where year between 1999 and 2006;
+
+-- question - 4
+select *                                                             select *
+from tutorial.oscar_nominees                   or                    from tutorial.oscar_nominees 
+where year in (1991 , 1998);                                         where year = 1991 or year = 1998;
+
+-- question - 5
+select movie 
+from tutorial.oscar_nominees 
+where winner = 'true' and year = 1997;
+
+--question - 6
+select * 
+from tutorial.oscar_nominees 
+where winner = 'true' and year in (1980,1994,2008) and category in ('actor in a leading role' , 'actress in a leading role');
+
+-- question - 7 
+select movie 
+from tutorial.oscar_nominees 
+where lower(movie) like 'a%';
+
+-- question - 8
+select movie 
+from tutorial.oscar_nominees 
+where lower(movie) like '%the%';
+
+-- question - 9 
+select * 
+from tutorial.oscar_nominees 
+where lower(nominee) like 'c%r';
+
+-- question - 10 
+select *
+from tutorial.oscar_nominees 
+where year = 2005 and winner = 'true' and 
+lower(movie) not like 'a%' and lower(movie) not like 'c%';
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+-- caselet = 2
+
+-- question - 1 
+select count(*)
+from tutorial.kag_conversion_data;
+
+-- question - 2
+select count( distinct fb_campaign_id)
+from tutorial.kag_conversion_data;
+
+-- question - 3
+select max(spent) as max_spent, min(impressions) as min_impressions ,avg(interest) as avg_interest
+from tutorial.kag_conversion_data;
+
+-- question - 4 
+select * , spent/impressions as spent_per_imp 
+from tutorial.kag_conversion_data;
+
+--question - 5
+select age , count(*)
+from tutorial.kag_conversion_data
+group by 1;
+
+-- question - 6 
+select gender , avg(spent) as avg_spent 
+from tutorial.kag_conversion_data 
+group by 1;
+
+-- question - 7
+select xyz_campaign_id , sum(approved_conversion) as total_approved_conversion
+from tutorial.kag_conversion_data
+group by 1
+order by 2 desc;
+
+-- question - 8 
+select fb_campaign_id , sum(interest) as total_interest
+from tutorial.kag_conversion_data
+group by 1 
+having sum(interest) > 300
+order by 2 desc;
+
+-- question - 9
+select age , gender , sum(impressions)/sum(interest) as interest_to_ratio
+from tutorial.kag_conversion_data 
+group by 1 , 2 
+order by 3 DESC 
+limit 1;
+
+-- question - 10 
+select xyz_campaign_id , gender , sum(total_conversion)-sum(approved_conversion) as total_unapproved_conversion
+from tutorial.kag_conversion_data
+group by 1 , 2
+order by 3 desc 
+limit 2 ;
+
+/////////////////////////////////////////////////////////////////
+-- caselet - 3 
+
+--question -1
+
+select country_code, count(*)
+from tutorial.crunchbase_companies 
+where country_code is not null and status = 'operating'
+group by 1 
+order by 2 desc 
+limit 5;
+
+--question - 2
+
+select count(*)                                                      select count(name)
+from tutorial.crunchbase_companies     or                            from tutorial.crunchbase_companies                          
+where country_code is null;                                          where country_code is null;
+                                          
+--question - 3
+
+select count(*)
+from tutorial.crunchbase_companies 
+where lower(name) like 'g%' and status = 'operating' and country_code = 'FRA';
+
+--question - 4 
+
+select count(*)
+from tutorial.crunchbase_companies 
+where founded_year > 2003 and status = 'acquired' and category_code = 'advertising';
+
+--question - 5 
+
+select category_code , sum(funding_total_usd)/count(category_code) as avg_funding_total_usd 
+from tutorial.crunchbase_companies 
+where category_code in ('software','education','analytics')
+group by category_code 
+order by 2 desc;
+
+-- question - 6 
+
+select city , count(name) as no_of_companies
+from tutorial.crunchbase_companies  
+where status = 'closed'
+group by city
+having count(name)> 50
+order by 2 desc;
+
+--question - 7 
+
+select count(name)
+from tutorial.crunchbase_companies 
+where category_code = 'biotech' and founded_year > 2000 and 
+((funding_total_usd > 1000000) or (status = 'ipo' and funding_rounds > 1));
+
+--question - 8 
+
+select city , count(name) as no_of_acquired_companies 
+from tutorial.crunchbase_companies 
+where lower(city) like '%city' and founded_year between 1980 and 2005 and  
+status = 'acquired' 
+group by 1 
+order by 2 desc;
+
+-- question - 9 
+
+select country_code , count(name)
+from tutorial.crunchbase_companies  
+where category_code = 'hardware' and country_code != 'USA'  and  
+funding_total_usd is null
+group by 1 
+order by 2 desc;
+
+--question - 10 
+
+select category_code , count(name) as no_of_companies 
+from tutorial.crunchbase_companies  
+where city in ('Singapore','Shanghai','Bangalore')
+group by 1 
+order by 2 desc 
+limit 5 ;

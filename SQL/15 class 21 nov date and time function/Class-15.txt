@@ -1,0 +1,71 @@
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- Find top 3 products based on their total sales value.
+
+select * from (
+select *, rank() over(order by x.total_sale desc) rnk 
+from (
+select a.product_id, count(*)*max(price_unit) as total_sale
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by a.product_id
+order by count(*)*max(price_unit) desc) x )y 
+where y.rnk in (1,2,3)
+;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Datan Time Functios
+select now();
+
+select *, now() as current_date_time, current_date, current_time
+from tutorial.excel_sql_transaction_data;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- How to subtract two dates?
+
+select product_id, min(date_part('days', now()-time)) as last_ordered_no_of_days
+from tutorial.excel_sql_transaction_data
+group by product_id
+order by min(date_part('days', now()-time)) desc;
+
+select max(time) from tutorial.excel_sql_transaction_data;
+
+select product_id, max(date_part('days', x.max_date-x.time)) as no_of_days
+from (
+select *, max(time) over(order by transaction_id) as max_date
+from tutorial.excel_sql_transaction_data) x 
+group by product_id 
+order by 2 desc;
+
+select *, extract(month from time) as m, 
+extract(dow from time) as dw,
+extract(doy from time) as dy,
+extract(year from time) as y
+from tutorial.excel_sql_transaction_data;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find year wise product wise number of orders.
+
+select x.yr, x.product_id, count(*)
+from (
+select extract(year from time) as yr, *
+from tutorial.excel_sql_transaction_data) x
+group by x.yr, x.product_id ;
+
+-- Find the day of the week with maximum sale value(sum(number of order*unitprice)). 
+select y.dw, sum(y.total_sale_value) as s 
+from (
+select *, extract(dow from x.t) as dw 
+from (
+select transaction_id, max(time) as t, sum(price_unit) as total_sale_value 
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+GROUP by 1) x) y
+group by y.dw
+order by 2 desc;

@@ -1,0 +1,159 @@
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+select * from sessionwithsumit.locations_data_u;
+
+
+-- Find the department name wise avg_salary for those departments which are located at US.
+-- Also, find the total number of employees working in such departments.
+
+select sum(x.cnt)
+from (
+select b.department_name, avg(a.salary) as avg_sal, count(*) as cnt
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+where b.location_id in (select location_id
+from sessionwithsumit.locations_data_u
+where country_id = 'US')
+GROUP by b.department_name ) x;
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+select min(salary), max(salary)
+from sessionwithsumit.employees_data;
+
+
+select employee_id, first_name, salary, department_id,
+case 
+    when salary <5000 then 'L4'
+    when salary >=5000 and salary <10000 then 'L3'
+    when salary >=10000 and salary <20000 then 'L2'
+    else 'L1'
+end as level
+from sessionwithsumit.employees_data;
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Find the level with highest avg_salary
+-- create level using following conditions
+-- if salary <6000: 'C'
+-- salary >=6000 and salary<15000: 'B'
+-- else 'A'
+
+select x.level, avg(x.salary)
+from (
+select employee_id, salary, 
+case 
+    when salary <6000 then 'C'
+    when salary >=6000 and salary<15000 then 'B'
+    else 'A'
+end as level
+from sessionwithsumit.employees_data) x 
+group by x.level
+order by avg(x.salary) desc;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+-- Find the number of customers who belong to those tenure_grade where avg(tenure) more than 35
+-- create the tenure_grade using following conditions
+-- if tenure<10 then 'A'
+-- if tenure>=10 and tenure<35 then 'B'
+-- if tenure>=35 and tenure <50 then 'C'
+-- else 'D'
+
+select sum(y.cnt)
+from (
+select x.tenure_grade, avg(x.tenure) as avg_tenure, count(*) as cnt
+from (
+select customer_id, tenure, 
+case 
+    when tenure<10 then 'A'
+    when tenure>=10 and tenure<35 then 'B'
+    when tenure>=35 and tenure<50 then 'C'
+    else 'D'
+end as tenure_grade
+from sessionwithsumit.churn_data_u) x 
+group by x.tenure_grade
+having avg(x.tenure)>35 ) y;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+select * from sessionwithsumit.churn_data_u;
+select * from sessionwithsumit.customer_data;
+
+
+-- Genrate a new column, monthlycharges level based on the following condition
+-- mc < 20 = 'D'
+-- mc >=20 and mc <50 = 'C'
+-- mc >=50 and mc <80 = 'B'
+-- else 'A'
+-- Find the count of such customers who are male, are non-churn and
+-- belong to those levels having avg(tenure) > 30
+
+select sum(y.cnt)
+from (
+select x.mc_level, avg(x.tenure) as avg_tenure, count(*) as cnt
+from (
+select *, 
+CASE 
+  when monthly_charges <20 then 'D'
+  when monthly_charges >=20 and monthly_charges <50 then 'C'
+  when monthly_charges >=50 and monthly_charges <80 then 'B'
+  else 'A'
+end as mc_level
+from sessionwithsumit.churn_data_u
+where churn = 'No'
+and customer_id in (select customer_id 
+from sessionwithsumit.customer_data
+where gender = 'Male')) x 
+group by x.mc_level
+having avg(x.tenure)>30) y;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ 
+
+select * from sessionwithsumit.churn_data_u;
+
+select sum(case when churn = 'No' then 0 else 1 end) as total_churn
+from sessionwithsumit.churn_data_u;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.internet_data;
+
+-- Find the number of customers using online_security, online_backup
+-- device_protection, tech_support, streaming_tv, streaming_movies
+
+select 
+sum(case when online_security = 'Yes' then 1 else 0 end) as online_security_yes,
+sum(case when online_backup = 'Yes' then 1 else 0 end) as online_backup_yes,
+sum(case when device_protection = 'Yes' then 1 else 0 end) as device_protection_yes,
+sum(case when tech_support = 'Yes' then 1 else 0 end) as tech_support_yes,
+sum(case when streaming_tv = 'Yes' then 1 else 0 end) as streaming_tv_yes,
+sum(case when streaming_movies = 'Yes' then 1 else 0 end) as streaming_movies_yes
+from sessionwithsumit.internet_data;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+select * from sumitshuklawork.employees;
+select * from sumitshuklawork.dept_emp;
+select * from sumitshuklawork.departments;
+select * from sumitshuklawork.salaries;
+
+
+-- Find the department_names  and the max_salary of those departments 
+-- where number of employees are more than 50000
+
+select b.dept_name, max(c.salary)
+from sumitshuklawork.dept_emp a 
+inner join sumitshuklawork.departments b 
+on a.dept_no = b.dept_no
+inner join sumitshuklawork.salaries c 
+on a.emp_no = c.emp_no
+group by b.dept_name
+having count(*)>500000;

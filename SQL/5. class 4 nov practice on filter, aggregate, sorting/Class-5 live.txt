@@ -1,0 +1,100 @@
+select * from sessionwithsumit.countries_data;
+
+-- Using countries data, find the region_id with maximum number of countries.
+
+select region_id, count(*)
+from sessionwithsumit.countries_data
+group by region_id
+order by count(*) desc;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.internet_data;
+-- Find the most popular internet_service (Internet Service used by most of the customers.)
+
+select internet_service, count(*)
+from sessionwithsumit.internet_data
+group by internet_service
+order by count(*) desc;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.department_data;
+
+-- Find the number of department where no manager has been assigned yet.
+
+select count(*)
+from sessionwithsumit.department_data
+where manager_id = 0;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find department_id wise average salary. Use employee_data. Which department is having
+-- Highest avg_salary?
+
+select department_id, avg(salary)
+from sessionwithsumit.employees_data
+group by department_id
+having avg(salary)>10000
+order by avg(salary) desc;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.churn_data_u;
+
+-- Find those paymentmethod for which avg(tenure) is more than 30
+
+select payment_method, avg(tenure)
+from sessionwithsumit.churn_data_u
+group by payment_method
+having avg(tenure)>30;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the contract type for which the avg(monthlycharges)>50 but only consider churn = 'No' 
+-- customers
+
+select contract, avg(monthly_charges)
+from sessionwithsumit.churn_data_u
+where churn = 'No'
+group by contract
+having avg(monthly_charges)>50
+order by avg(monthly_charges) desc;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find department wise avg_salary and the number of employees
+-- Retain those departments where number of employees are more than 10.
+select * from sessionwithsumit.employees_data;
+
+select department_id, avg(salary), count(*)
+from sessionwithsumit.employees_data
+group by department_id
+having count(*)>10
+order by count(*) desc;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+
+select a.first_name, a.salary, b.department_name
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find department_name wise avg(salary)
+
+select b.department_name, avg(a.salary)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+group by b.department_name
+order by avg(a.salary) desc;

@@ -1,0 +1,98 @@
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- Find day wise average and the moving average of sales(frame of 2 days).
+
+select *, avg(y.a_s) over(rows between current row and 1 following) as f
+from (
+select extract(day from x.t) as d, avg(x.s) as a_s
+from (
+select b.transaction_id, max(time) as t, sum(a.price_unit) as s
+from tutorial.excel_sql_inventory_data a 
+inner join  tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by b.transaction_id) x 
+group by 1
+order by 1) y;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the first and the last order(transaction_id) for each product.
+
+select x.product_id, max(x.f) as f, max(x.l) as l
+from (
+select a.product_id, 
+first_value(b.transaction_id) over(partition by a.product_id order by time rows between unbounded preceding and unbounded following ) as f,
+last_value(b.transaction_id) over(partition by a.product_id order by time rows between unbounded preceding and unbounded following ) as l
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+order by b.product_id, time)x
+group by x.product_id;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.employees_data;
+
+select job_id, LEFT(job_id, 2), right(job_id, 4), length(job_id), position('_' in job_id), right(job_id, length(job_id)-position('_' in job_id))
+from sessionwithsumit.employees_data;
+
+-- Find the number of employees who are having 5 characters in their first name and 
+-- their first name starts with s and the last name ends with s.
+
+select *
+from sessionwithsumit.employees_data
+where left(first_name, 1) = 'S' and right(last_name, 1) = 's'
+and length(first_name) = 5;
+
+select * from heather.sfpd_incidents;
+
+select trim( '   Sumit Shukla    ') as a, trim('_' from '___Sumit Shukla___') as b,
+trim(leading '_' from '___Sumit Shukla___') as c, trim(trailing '_' from '___Sumit Shukla___') as d
+
+-- Using various string functions, fetch lat and lng in two different colums using location column.
+select location,length(location), position(',' in location), trim(leading '('from left(location,position(',' in location)-1)),
+trim(trailing ')' from right(location, length(location)-position(',' in location)))
+from heather.sfpd_incidents;
+
+select location, split_part(trim('()' from location), ',',1), split_part(trim('()' from location), ',',2)
+from heather.sfpd_incidents;
+
+select split_part('Sumit_Shukla', '_', 1),split_part('Sumit_Shukla', '_', 2)
+
+select substr('AD_VP', 4,2)
+select date, substr(date, 7,10) as y
+from heather.sfpd_incidents; 
+
+select * from sessionwithsumit.employees_data;
+
+select first_name, upper(first_name), lower(first_name) 
+from sessionwithsumit.employees_data;
+
+select employee_id, concat(first_name, ' ',last_name) as full_name, salary, department_id
+from sessionwithsumit.employees_data;
+
+-- Find employee_id, full_name, email_id(email_last_name@abc.com), department_name, salary
+
+select a.employee_id, concat(a.first_name, ' ', a.last_name) as full_name, 
+concat(lower(a.email),'_',lower(a.last_name),'@abc.com') as email_id,b.department_name, a.salary 
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id;
+
+select * from tutorial.crunchbase_companies;
+select category_code, COALESCE(category_code, 'No Category Assigned') as category_code_updated
+from tutorial.crunchbase_companies;
+
+select * from sessionwithsumit.internet_data;
+-- For each service, find the number of customers who use these services.
+
+select sum(case when online_security = 'Yes' then 1 else 0 end) as os,
+sum(case when online_backup = 'Yes' then 1 else 0 end ) as ob,
+sum(case when device_protection = 'Yes' then 1 else 0 end ) as dp,
+sum(case when tech_support = 'Yes' then 1 else 0 end ) as ts,
+sum(case when streaming_tv = 'Yes' then 1 else 0 end ) as st,
+sum(case when streaming_movies = 'Yes' then 1 else 0 end ) as sm
+from sessionwithsumit.internet_data;

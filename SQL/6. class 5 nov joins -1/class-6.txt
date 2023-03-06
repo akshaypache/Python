@@ -1,0 +1,132 @@
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+
+select a.first_name, a.salary, b.department_name
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the number of employees working in the Executive Department.
+
+select count(*)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+where b.department_name = 'Executive';
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the name of the department with highest number of employees working in it.
+-- department_name wise count of employees
+
+select b.department_name, count(*)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+group by b.department_name
+order by count(*) desc;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.churn_data_u;
+select * from sessionwithsumit.internet_data;
+
+-- Find the internet_sevice wise avg(tenure) for non-churn customers(churn = 'No')
+
+select b.internet_service, avg(a.tenure)
+from sessionwithsumit.churn_data_u a 
+inner join sessionwithsumit.internet_data b 
+on a.customer_id = b.customer_id
+where a.churn = 'No'
+group by b.internet_service
+order by avg(a.tenure) desc;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.customer_data;
+
+-- Find the gender wise avg_monthly_charges but only for non-churn customers.
+
+select b.gender, avg(a.monthly_charges)
+from sessionwithsumit.churn_data_u a 
+inner join sessionwithsumit.customer_data b 
+on a.customer_id = b.customer_id
+where a.churn = 'No'
+group by b.gender
+order by avg(a.monthly_charges) desc;
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.churn_data_u;
+
+-- Find the number of churn and non-churn customers under each contract type
+
+select contract, churn, count(*)
+from sessionwithsumit.churn_data_u
+group by contract, churn
+ORDER by count(*) desc;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the number of males and females under various contract types
+
+select a.contract, b.gender, count(*)
+from sessionwithsumit.churn_data_u a 
+inner join sessionwithsumit.customer_data b 
+on a.customer_id = b.customer_id
+group by a.contract, b.gender;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+select * from sessionwithsumit.locations_data_u;
+
+select *
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+inner join sessionwithsumit.locations_data_u c 
+on b.location_id = c.location_id;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the country_id wise avg_salary. 
+
+select c.country_id, avg(a.salary)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id 
+inner join sessionwithsumit.locations_data_u c 
+on b.location_id = c.location_id
+group by c.country_id
+order by avg(a.salary) desc;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+select * from sessionwithsumit.locations_data_u;
+select * from sessionwithsumit.countries_data;
+
+-- Find the number of employees and the avg_salary per country name.
+-- Retain those countries where the number of employees working are more than 10.
+
+select d.country_name, avg(a.salary), count(*)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id 
+inner join sessionwithsumit.locations_data_u c 
+on b.location_id = c.location_id 
+inner join sessionwithsumit.countries_data d 
+on c.country_id = d.country_id
+GROUP by d.country_name
+having count(*)>10
+order by avg(a.salary) desc;

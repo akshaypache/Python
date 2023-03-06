@@ -1,0 +1,165 @@
+select * from sessionwithsumit.employees_data;
+
+-- According to the company, managers with salary<5000 belongs to grade-3, managers with
+-- salary>=5000 and salary<10000, belongs to grade-2, managers with salary more than equals 10000
+-- are grade-1 employees. 
+-- Find the number of managers who are grade-1
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the department_name wise avg_salary. Which department has the highest avg_salary
+
+select b.department_name, avg(a.salary) as avg_sal
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+group by b.department_name 
+order by avg(a.salary) desc;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the avg_salary of the shipping department
+
+select avg(salary)
+from sessionwithsumit.employees_data
+where department_id in (select department_id 
+from sessionwithsumit.department_data 
+where department_name='Shipping');
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from tutorial.city_populations;
+
+-- Write a query to retun all the records where the city population is more than
+-- the avg_population of the dataset.
+
+select avg(population_estimate_2012)
+from tutorial.city_populations;
+
+select *
+from tutorial.city_populations
+where population_estimate_2012 > (select avg(population_estimate_2012)
+from tutorial.city_populations);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Write a query to return all the records where the city popluation is more than the 
+-- most populated city of Texas(TX) state.
+
+select max(population_estimate_2012)
+from tutorial.city_populations
+where state = 'TX';
+
+select *
+from tutorial.city_populations
+where population_estimate_2012 > (select max(population_estimate_2012)
+from tutorial.city_populations
+where state = 'TX');
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the number of cities where population is more than the 
+-- average population of llinious(IL) state
+
+select avg(population_estimate_2012)
+from tutorial.city_populations
+where state = 'IL';
+
+select count(*)
+from tutorial.city_populations
+where population_estimate_2012 > (select avg(population_estimate_2012)
+from tutorial.city_populations
+where state = 'IL');
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find city wise percentage of population.
+
+select * from tutorial.city_populations;
+
+select state, sum(population_estimate_2012) as total_p
+from tutorial.city_populations
+group by state;
+
+select x.city, 100*(x.population_estimate_2012/x.total_p) as pct
+from (
+select *
+from tutorial.city_populations a 
+left join 
+(select state, sum(population_estimate_2012) as total_p
+from tutorial.city_populations
+group by state) b 
+on a.state = b.state) x;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Create a new column in the city_population data
+-- in the following way
+-- if the popluation of that city> avg(popluation of the state in which the city belong to)
+-- High
+-- Else
+-- Low
+
+
+select *, 
+case 
+  when x.population_estimate_2012 > x.avg_p then 'High'
+  else 'Low'
+end as condit
+from (
+select *
+from tutorial.city_populations a 
+left join (
+select state, avg(population_estimate_2012) as avg_p
+from tutorial.city_populations
+group by state) b 
+on a.state = b.state) x;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- ------------
+select * from tutorial.oscar_nominees 
+
+-- Find the name of nominees who got more nominations than "Akim Tamiroff"
+
+select nominee, count(*) as cnt
+from tutorial.oscar_nominees
+group by nominee
+having count(*)>(select count(*)
+from tutorial.oscar_nominees
+where nominee = 'Akim Tamiroff') ;
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-- 
+select * from tutorial.oscar_nominees;
+-- Find Nominee Name followed by , Number of Nominations, Win_rate, Loss_rate
+-- Win rate: Number of wins/total nominations
+-- Loss rate: Number of loss/total nominations
+
+-- Nominee | Number of Nominations | Win_rate | Loss_rate
+
+select x.nominee, x.num, 100*x.number_of_wins/x.num as win_rate, 
+100*x.number_of_loss/x.num as loss_rate
+from (
+select nominee, count(*) as num, 
+sum(CASE 
+  when winner = 'false' then 0
+  else 1
+end) as number_of_wins,
+sum(CASE 
+  when winner = 'false' then 1
+  else 0
+end) as number_of_loss
+from tutorial.oscar_nominees
+group by nominee) x;

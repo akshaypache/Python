@@ -1,0 +1,476 @@
+/************************************      CS1      ************************************/
+
+
+
+CREATE TABLE CAR (
+  dealer_id VARCHAR NOT NULL,
+  model_id VARCHAR NOT NULL,
+  engine_no VARCHAR not null,
+  status VARCHAR NOT NULL,
+  inventory_days INT,
+  booking_id VARCHAR
+);
+
+-- insert
+INSERT INTO CAR VALUES ('ABC1','123A','XYZ123','Inventory',10,NULL);
+INSERT INTO CAR VALUES ('ABC1','123C','XYZ134','Transit',NULL,'123ABC');
+INSERT INTO CAR VALUES ('ABC1','123D','XYZ128','Retailed',21,'124ABC');
+INSERT INTO CAR VALUES ('ABC2','123B','XYZ128','Inventory',7,'123ADF');
+INSERT INTO CAR VALUES ('ABC2','123E','XYZ129','Transit',NULL,NULL);
+INSERT INTO CAR VALUES ('ABC2','123C','XYZ125','Retailed',10,'124XYZ');
+
+
+-- fetch 
+SELECT * FROM CAR;
+
+
+/*Q1 Question 1. We need to understand the behaviour of manufacturing and stocking up of cars to manage the
+efficiency of booking.We need to improve the profitability of dealership by decreasing the inventory days.For this
+we can do either of two things- Either sell the cars quickly or keep only the relevant cars in the inventory-Let us
+start analyzing the data by calculating Model wise Average Inventory days at each dealership by overall model
+wise average inventory days to see if the model is stocked up for this particular dealer only or generally has high
+inventory days.*/
+
+
+
+
+select 
+case
+	when A.Dealer_Inventory_days > Model_Inventory_Days then 'Check the Dealer'
+	when A.Dealer_Inventory_days < Model_Inventory_Days then 'Check the Model'
+	else 'nothing'
+end as flag
+from (
+		(select avg(inventory_days) as Dealer_Inventory_days, model_id, dealer_id,* 
+		from
+		CAR GROUP BY dealer_id) A
+				Join
+		(select avg(inventory_days) as Model_Inventory_Days, model_id,* 
+		from
+		CAR GROUP BY model_id) B
+	) base
+
+
+
+/*Question 2. We can also determine the performance of a dealership by calculating Booking and total inventory
+ratio. (The Cars in Transit are also in inventory). Rank the dealerships on the basis of this ratio to compare the
+dealership performance.Higher the ratio better is the performance*/
+
+select *, row_number() over(order by Ratio desc) as rank_Dealers
+	from (
+		select
+			(count(distinct(case 
+								when booking_id is not null then booking_id
+								else null 
+							end)) as Booking 
+			/
+			count(distinct(case 
+								when status in ('Transit','Inventory') then booking_id
+								else null 
+							end)) as Total_Inventory
+			)as Ratio,
+			dealer_id
+		from CAR
+		GROUP BY dealer_id
+		) base;
+			
+/*Question 3. We also want to look at other performance metrics of a dealer like time taken to retail a particular
+model.For this we will first make a key called dealer id and model id create a table called car_vl*/
+
+create table car_v1 as
+	select
+		*,concat(dealer_id, '-', model_id) as Key
+	from CAR where status = 'Retailed';
+	
+select * from car_v1
+
+/*Question 4. For each dealer we want to calculate the number of days for which it keeps the car.Let's say that it
+keeps almost all models in inventory for 10 days. So we want this number of days for which most of the cars are
+kept in the inventory by the dealer to understand the flaw of the system. We wish to create a frequency table
+where we want to see for a particular dealer and Inventory Days how many cars are stocked by
+Example dealer_ID = ABCI for 10 inventory days stocks up 5 cars.*/
+
+select inventory_days,dealer_id, count(engine_no) as cnt
+from CAR
+group by inventory_days,dealer_id
+
+
+/*Question 5. We have to send out our new launched models to only those dealers which are popular and have
+good bookings. We will shortlist it on the basis of minimum number of bookings that is 50. Write a query to identify
+the dealer who have less than 50 bookings till date.*/
+
+Select count(booking_id) as bookings, dealer_id
+From CAR
+Group by dealer_id
+Having count(booking_id)< 50
+
+
+/************************************      CS2      ************************************/
+
+/* use this to run one query at a time with lines 101 to 122 always present https://www.mycompiler.io/new/mysql*/
+CREATE TABLE DATAMART (
+  
+	week_date DATE NOT NULL,
+	region TEXT,
+	platform TEXT,
+	segment TEXT,
+	customer_type TEXT,
+	transactions INT,
+	sales FLOAT 
+);
+
+INSERT INTO DATAMART VALUES ('9/9/20','OCEANIA','Shopify','C3','New',610,110033.89);
+INSERT INTO DATAMART VALUES ('29/7/20','AFRICA','Retail','C1','New',110692,3053771.19);
+INSERT INTO DATAMART VALUES ('22/7/20','EUROPE','Shopify','C4','Existing',24,8101.54);
+INSERT INTO DATAMART VALUES ('13/5/20','AFRICA','Shopify',null,'Guest',5287,1003301.37);
+INSERT INTO DATAMART VALUES ('24/7/19','ASIA','Retail','C1','New',127342,3151780.41);
+INSERT INTO DATAMART VALUES ('10/7/19','CANADA','Shopify','F3','New',51,8844.93);
+INSERT INTO DATAMART VALUES ('26/6/19','OCEANIA','Retail','C3','New',152921,5551385.36);
+INSERT INTO DATAMART VALUES ('29/5/19','SOUTH AMERICA','Shopify',null,'New',53,10056.2);
+INSERT INTO DATAMART VALUES ('22/8/18','AFRICA','Retail',null,'Existing',31721,1718863.58);
+INSERT INTO DATAMART VALUES ('25/7/18','SOUTH AMERICA','Retail',null,'New',2136,8);
+
+/*SELECT * FROM DATAMART;*/
+
+
+/*Question I. Data Cleansing Steps
+In a single query, perform the following operations and generate a new table in the data_mart schema named
+clean_weekly_sales:
+• Add a week_number as the second column for each week_date value, for example any value from the 1st of
+January to 7th of January will be 1, 8th to 14th will be 2 etc
+• Add a month_number with the calendar month for each week_date value as the 3rd column
+• Add a calendar_year column as the 4th column containing either 2018, 2019 or 2020 values*/
+
+Create table clean_weekly_sales as
+Select * , week(week_date) as week_number, month(week_date) as month_number, year(week_date) as calander_year
+from
+DATAMART;
+
+select * from clean_weekly_sales;
+
+
+
+/*Question 2. Add a new column called age_band after the original segment column using the following mapping on
+the number inside the segment value
+
+Segment
+1 : Young Adults
+2 : Middle Aged
+3 or 4 : Retirees
+
+Add a new demographic column using the following mapping for the first letter in the segment values:
+
+Segment
+C : Couples
+F : Families
+*/
+
+Create table tablel as
+	Select * , 
+		case 
+			when right(segment,1) = 1 then 'Young Adults'
+			when right(segment,1) = 2 then 'Middle Aged'
+			when right(segment,1) = 3 or right(segment,1) = 4 then 'Retirees' 
+			else null 
+		end as Age_Band,
+		
+		case 
+			when left(segment,1) = 'C' then 'Couples'
+			when left(segment,1) = 'F' then 'Families'
+			else null
+		end as Demographic
+from clean_weekly_sales;
+
+
+/*Question 3. As a part of further data exploration,What day of the week is used for each week_date value?*/
+
+Select * , day_of_week(week_date) as weekday from
+clean_weekly_sales;
+
+
+/*Question 4. What is the total sales for each region for each month?*/
+
+Select sum(sales), region, month_number from
+clean_weekly_sales
+Group by region, month_number;
+
+/*Question 5. Which age_band and demographic values contribute the most to Retail sales?*/
+
+Select * from
+	(Select *, 
+		case 
+			when right(segment,1) = 1 then 'Young Adults'
+			when right(segment,1) = 2 then 'Middle Aged'
+			when right(segment,1) = 3 or right(segment,1) = 4 then 'Retirees' 
+			else null 
+		end as Age_Band,
+		
+		case 
+			when left(segment,1) = 'C' then 'Couples'
+			when left(segment,1) = 'F' then 'Families'
+			else null 
+		end as Demographic,
+	
+	sum(sales) as total_sales
+	
+	from clean_weekly_sales
+	where platform = 'Retail'
+	Group by
+		case 
+			when right(segment,1) = 1 then 'Young Adults'
+			when right(segment,1) = 2 then 'Middle Aged'
+			when right(segment,1) = 3 or right(segment,1) = 4 then 'Retirees'
+			else null 
+		end as Age_Band,
+		
+		case 
+			when left(segment,1) = 'C' then 'Couples'
+			when left(segment,1) = 'F' then 'Families'
+			else null 
+		end as Demographic
+	) base
+	Order by total_sales
+	Limit 1
+
+/************************************      CS3      ************************************/
+
+
+CREATE TABLE snapshot (
+	id TEXT,
+	parentid TEXT,
+	createdtimestamp TIMESTAMP,
+	firstresponsetime(mins) INT,
+	solvedtimestamp TIMESTAMP,
+	agentid TEXT,
+	rating INT,
+	vertical TEXT,
+	status TEXT
+);
+
+INSERT INTO snapshot VALUES ('a','b','25-02-2021 12:00',45,null,'XY',null,'Profile','Customer response pending');
+INSERT INTO snapshot VALUES ('b','b','01-13-2021 2:00:00',123,'15-01-2021','AJ',2,'Profile','Solved');
+INSERT INTO snapshot VALUES ('c',null,'01-01-2021 15:00',24,'05-01-2021','YH',3,'Profile','Solved');
+INSERT INTO snapshot VALUES ('d',null,'01-01-2021 15:00',230,'14-05-2021','YW',4,'UPI','Solved');
+
+/*Question 1. To track the performance or output of the team ,it is important to check the inflow volume the team is
+receiving. The team has decided to calculate average cases received per day. Find this trend week over week.*/
+
+Select week(createdtimestamp) as week_number, count(distinct(id))/7
+From snapshot
+Group by week(createdtimestamp)
+
+
+/*Question 2. First response time is an important metric to comfort the customer. Suppose you order something from
+an ecommerce platform and reach out to them with a refund related request. You don't hear back from them for a
+few hours/days. It will lead to a bad customer experience and loss of trust in the platform.Keeping this in mind,
+Amazon has decided the ideal first response time is <=120 mins.Calculate the % of cases which were reached out
+by the agent within the ideal time for each week*/
+
+Select 
+	week(createdtimestamp) as week_number,
+	sum(case
+			when firstresponsetime(mins) <= 120 then 1
+			else O
+		end) as FRT_cases)
+		/
+	count(distinct(id)) as FRT%
+From snapshot
+Group by week(createdtimestamp)
+
+
+/*Question 3. Overall Handing Time is also an important metric to track agent/business performance. This metric is
+also used to avoid churn. Suppose the ideal case closed time is <=2 days. Calculate the % of cases which were
+resolved with the ideal time*/
+
+Select
+	week(createdtimestamp) as week_number,
+	sum(case
+		when datediff(day,solvedtimestamp,createdtimestamp) <= 2 then 1 
+		else O end) as ART_cases)
+		/
+	count(distinct(id)) as ART%
+From snapshot
+Group by week(createdtimestamp)
+
+
+/*Question 4. The customer dissatisfaction can be reflected by the number of times the customer reopens the case.
+Suppose you raise a request on an ecommerce platform and the request is closed by the agent. If you reopen the
+case or reply on the same message thread the case is considered to be reopened.Help the team write a query for
+the reopen% of the cases i.e cases which were not first contact resolution. Find this metric week over week so that
+dashboard can have all the metrics at the same granularity.*/
+
+Select
+	week(createdtimestamp) as week_number,
+	count(distinct(case 
+					when B.Parentid is not null then A.id
+					else null 
+				   end) as reopen)
+	/ 
+	count(distinct(id)) as Reopen%
+from snapshot A
+left join snapshot B
+On A.id = B.parentid
+
+
+
+/*Question 5. We also want to see if there are agents from a particular vertical who are not performing good.We
+want to see this metric on overall level till date.Calculate Average Rating for each Vertical on an overall level.*/
+
+Select avg(rating),vertical from snapshot
+Group by vertical
+
+
+/************************************      CS4      ************************************/
+
+
+
+
+
+CREATE TABLE height (
+	R_ID INT,
+	Country_Name TEXT,
+	Male_cm FLOAT,
+	Fem_cm FLOAT,
+	Male_ft TEXT,
+	Fem_Ft TEXT
+);
+
+
+INSERT INTO height VALUES (1234,'India',170.18,null,'5’7',null);
+INSERT INTO height VALUES (1235,'China',null,165.1,null,'5’5');
+INSERT INTO height VALUES (1236,'India',null,177.8,null,'5’10');
+
+/*Question 1. It is becoming difficult to process the data. Also, it has been decided that the analysis will be done by
+dividing the total data into two equal parts. For this, write a query to fetch first 50% of the records from the "Height"
+table sorted by country name?*/
+
+SELECT
+TOP 50 PERCENT *
+FROM height
+ORDER BY Country_Name asc;
+
+
+/*Question 2. The analysis is further refined to take random sub groups. Write a query to find the first three records
+from the "Height" table, where the country is starting from "Ge" and order it on the basis of height in cm?*/
+
+SELECT *
+FROM height
+WHERE
+Country_Name LIKE 'Ge%'
+ORDER BY Male_cm, Fem_cm
+LIMIT 3;
+
+/*Question 3. To clean the data ,Write a query to create a new column called Male_cm_new in which null values are
+replaced by the average height of male in that country*/
+
+Select 
+	case 
+		when Male_cm is null then avg(Male_cm)
+		else Male_cm 
+	end as Male_cm_new
+From height
+group by Country_Name
+
+
+/*Question 4. Identify the outliers in data.The outlier in the data are identified as the Male_cm or Female_cm having
+a difference from the overall average Male_cm and Female_cm by 100 cm or more*/
+
+Select 
+	case 
+		when abs(Male_cm -average_male_height > = 100 then 1
+		When abs(Fem_cm - average_female_height) > = 100 then 1
+		else 0 
+	end as flag
+from 
+	(Select avg(male_cm) as average_male_height,
+	avg(female_cm) as average_female_height, Male_cm, Fem_cm
+	from height
+	) 
+
+/*Question 5. Write a query to find the height of most number of men to see the general trend*/
+
+Select * from
+(Select count(*) as cnt , Male_cm
+from
+height
+Group by Male_cm)
+Order by cnt
+Limit 1
+
+
+/************************************      CS5     ************************************/
+
+
+
+CREATE TABLE stud (
+	StudID TEXT,
+	Class_ INT,
+	weight INT
+);
+
+INSERT INTO stud VALUES ('A',8,50);
+INSERT INTO stud VALUES ('B',9,60);
+INSERT INTO stud VALUES ('A',8,55);
+INSERT INTO stud VALUES ('B',9,70);
+
+
+/*Question 1. Create a table name 'student' with two columns Student_id and weight.Create a table named Student
+with a column The Student_id column will be 'StudlD' — 'Class'. This column studentid will be a unique identifier of
+the student*/
+
+Create table Student as
+Select
+concat(StudID, " - ", Class_)
+from stud
+
+/*Question 2. The school wants to identify the students with highest weight to consider them sample for their
+observations. So that there are no biases in the experiment the students are picked across all classes. Write a
+query to find the minimum number of such students such that sum of their weights is >=200*/
+
+Select
+	sum(weight) over (order by weight desc) as running_sum, Class_
+	from stud
+
+
+/*Question 3. In results for question 2 , it was observed that most of the students were from higher classes who
+weighed higher . So, the experiment was extended to incorporate sample from all classes. Write a query to find the
+minimum number of such students for each class such that sum of their weights is >=200*/
+
+
+Select
+sum(weight) over (partition by Class_ order by weight desc) as running_sum, Class_
+from stud
+
+
+
+/*Question 4. The school also wants to understand top how many students from each class are required to form a
+sample. They want to associate the students with rank. Write a query to rank the student in the descending order
+of their weights for each class*/
+
+Select
+rank() over (partition by Class_ order by weight desc) as rnk
+from stud
+
+/*Question 5. The school wants to divide the students into different groups on the basis of their class. They will then
+use this data to compare the weight of the particular group with such data for different schools.This will also be
+used to compare a student's weight with the average weight of the group he is/isn't part of.Write a query to find the
+average weight for each group where
+• Class 1,2 is Groupl
+• Class 3,4 is Group2
+• Class 5,6 is Group3
+• Class 7,8 is Group4
+• Class 9,10 is Group5
+Show these group averages as separate columns*/
+
+select
+avg((Case 
+		when Class_ in (1,2) then weight
+		else null
+	end))	as Group1,
+
+avg((Case when Class_ in (3,4) then weight else null end) ) as Group2,
+avg((Case when Class_ in (5,6) then weight else null end) ) as Group3,
+avg((Case when Class_ in (7,8) then weight else null end) ) as Group4,
+avg((Case when Class_ in (9,10) then weight else null end) ) as Group5
+from
+stud;

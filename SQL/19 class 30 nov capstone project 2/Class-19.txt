@@ -1,0 +1,86 @@
+site -- dbfiddle
+
+-- How many customer the zee5 company ever had?
+select count(distinct customer_id) as cnt
+from dbo.subscriptions;
+
+-- What is the monthly distribution of the trial_plan.
+-- Month wise find the count of customers who opted for the trial plan
+-- and the percentage of customers.
+select extract(month from start_date), count(*), 
+100*count(*)/(select count(*) from dbo.subscriptions
+          where plan_id = 0) as pct
+from dbo.subscriptions
+where plan_id in (select plan_id
+                  from dbo.plans 
+                  where plan_name = 'trial')
+group by 1
+order by 1;
+
+-- Find plan_name wise count of subscriptions which were sold after
+-- year 2020
+
+select b.plan_name, count(*) as cnt
+from dbo.subscriptions a 
+inner join dbo.plans b 
+on a.plan_id = b.plan_id
+where a.start_date>='2021-01-01'
+group by 1;
+
+-- Find the customer count and percentage of customers
+-- who have churned.
+
+select count(*), 100*count(*)/(select count(distinct 
+                                       customer_id) from dbo.subscriptions)
+from dbo.subscriptions
+where plan_id in (select plan_id 
+                  from dbo.plans 
+                  where plan_name ='churn');
+				  
+				  
+				  -- Find the number of customers and the percentage of customers
+-- who churned staight after trail plan.
+
+select count(*), 100*count(*)/(select count(distinct customer_id)
+                               from dbo.subscriptions)
+from (
+select *
+from (
+select *, row_number() over(partition by a.customer_id order by a.start_date) as rn
+from dbo.subscriptions a 
+inner join dbo.plans b 
+on a.plan_id = b.plan_id) x
+where x.rn = 2 and x.plan_name = 'churn') y;
+
+-- Find the number and percentage of customers
+-- Who opted for the annual plan and then became churn.
+select count(*), 100*round(count(*),3)/1000
+from (
+select a.customer_id,b.plan_name as previous_plan,
+lead(plan_name) over(partition by a.customer_id order by a.start_date) as
+current_plan
+from dbo.subscriptions a 
+inner join dbo.plans b 
+on a.plan_id = b.plan_id) x
+where x.previous_plan = 'pro annual' and x.current_plan = 'churn';
+
+-- Find the plan_name wise percentage of customers
+-- Within each plan after they have opted for trail.
+
+select b.plan_name, count(distinct a.customer_id), 
+100*count(distinct a.customer_id)/(select count(*)
+                               from dbo.subscriptions where plan_id !=0)
+from dbo.subscriptions a 
+inner join dbo.plans b 
+on a.plan_id = b.plan_id
+where b.plan_name != 'trial'
+group by b.plan_name;
+
+-- How many customers,upgraded to an annual plan in the year 2020
+
+select count(*)
+from dbo.subscriptions
+where plan_id in (select plan_id 
+                  from dbo.plans
+                  where plan_name='pro annual')
+and extract(year from start_date) = 2020;

@@ -1,0 +1,139 @@
+-- Functions
+-- count, sum, min, max, avg
+-- Where
+-- Group
+-- Order - desc
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Practice Session
+select * from sessionwithsumit.employees_data;
+
+-- Find the job_id wise avg_salary, Exclude those who are having manager_id as 0 also
+-- Exclude those who are from department = 90 or department = 10.
+-- Sort the result in descending order of avg_salary.
+
+select job_id, avg(salary)
+from sessionwithsumit.employees_data
+where manager_id !=0
+and (department_id !=90 and department_id !=10)
+group by job_id
+order by avg(salary) desc;
+
+select *
+from sessionwithsumit.employees_data
+where department_id !=90 and department_id!=10;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.churn_data_u;
+
+-- Find the Contract wise avg_tenure for the customers 
+-- Who are non-churn(Churn = 'No')
+-- and don't use Electronic check and mailed check.
+
+select contract, avg(tenure)
+from sessionwithsumit.churn_data_u
+where churn = 'No'
+and payment_method != 'Electronic check' and payment_method != 'Mailed check'
+group by contract
+order by avg(tenure) desc;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.internet_data;
+
+-- Find the number of customers who are using internet_service as Fiber optic or either using DSL
+-- and they don't use multiple_lines, online_backup, device_protection, tech_support,
+-- streaming_tv, streaming_movies.
+
+select count(*)
+from sessionwithsumit.internet_data
+where (internet_service = 'Fiber optic' or internet_service = 'DSL')
+and multiple_lines = 'No' and online_backup = 'No' and device_protection = 'No'
+and tech_support = 'No' and streaming_tv = 'No' and streaming_movies = 'No';
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Whenever we have the task to filter a column on more than one category, we use in
+select * from sessionwithsumit.employees_data;
+
+-- Filter all the employees from department 90,10,50
+select *
+from sessionwithsumit.employees_data
+where department_id = 90 or department_id = 10 or department_id =50;
+
+select *
+from sessionwithsumit.employees_data
+where department_id in (90,10,50);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find all the employees but remove thos employees who are having manager as 0 and 101
+
+select *
+from sessionwithsumit.employees_data
+where manager_id not in (0,101);
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.employees_data;
+
+-- Find department_wise avg_salary
+-- exclude all those employees who are AD_VP or AD_PRES
+-- order the result in descending order or avg_salary
+
+select department_id, avg(salary)
+from sessionwithsumit.employees_data
+where job_id not in ('AD_PRES', 'AD_VP')
+group by department_id
+order by avg(salary) desc;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.employees_data;
+
+select *
+from sessionwithsumit.employees_data
+where first_name like 'A%r';
+
+-- Find the number of employees
+-- Whoes name start with either A or S
+-- and have 5 character in their name.
+
+select *
+from sessionwithsumit.employees_data
+where first_name like 'A____' or first_name like 'S____';
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the number of employees who are having salary more than equals to 1000
+-- and less than equals to 10000. Also their first name consist of the character A.
+
+select *
+from sessionwithsumit.employees_data
+where salary >=1000 and salary <=10000 and (first_name like '%A%' or first_name like '%a%');
+
+select count(*)
+from sessionwithsumit.employees_data
+where salary between 1000 and 10000 and (first_name like '%A%' or first_name like '%a%');
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.churn_data_u;
+
+-- Find the contract wise avg_monthlycharges 
+-- for customer who are having tenure between 5-50
+-- order the result in descending order of avg_monthlycharges.
+
+select contract, avg(monthly_charges)
+from sessionwithsumit.churn_data_u
+where tenure between 5 and 50
+group by contract
+order by avg(monthly_charges) desc;

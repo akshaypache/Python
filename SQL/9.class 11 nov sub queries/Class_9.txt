@@ -1,0 +1,165 @@
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+
+
+-- Find the avg_salary of Shipping Department.
+ 
+select avg(a.salary)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+where b.department_name = 'Shipping';
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find department_name and avg_salary of those departments where avg_salary >10000
+
+select b.department_name , avg(a.salary)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+group by b.department_name 
+having avg(a.salary) >10000;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the avg_salary of Shipping Department.                   *second method*
+
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+
+select department_id
+from sessionwithsumit.department_data
+where department_name  = 'Shipping';
+
+select avg(salary)
+from sessionwithsumit.employees_data
+where department_id in (select department_id
+from sessionwithsumit.department_data
+where department_name  = 'Shipping');
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.churn_data_u;
+select * from sessionwithsumit.customer_data;
+
+
+-- Find the avg_monthly charges for Male Non-Churn customers.
+
+select avg(monthly_charges)
+from sessionwithsumit.churn_data_u
+where churn = 'No'
+and customer_id in (select customer_id from 
+sessionwithsumit.customer_data 
+where gender = 'Male');
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.internet_data;
+
+-- Find the avg_tenure of customers who are non_churn are Male and are using Fiber optic as
+-- internet_service.
+
+select avg(tenure)
+from sessionwithsumit.churn_data_u
+where churn = 'No'
+and customer_id in (select customer_id
+from sessionwithsumit.customer_data
+where gender = 'Male')
+and customer_id in (select customer_id
+from sessionwithsumit.internet_data
+where internet_service = 'Fiber optic');
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the internet_service wise avg_tenure for male customers.
+
+select b.internet_service, avg(a.tenure)
+from sessionwithsumit.churn_data_u a 
+inner join sessionwithsumit.internet_data b 
+on a.customer_id = b.customer_id
+where a.customer_id in (select customer_id from 
+sessionwithsumit.customer_data where gender = 'Male')
+group by b.internet_service;  
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.churn_data_u;
+
+-- Percentage of churn customers ?
+
+select 100*count(*)/(select count(*) from sessionwithsumit.churn_data_u) as churn_pct
+from sessionwithsumit.churn_data_u 
+where churn = 'Yes';
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the percentage of Males and Female non -churn customers.
+
+select * from sessionwithsumit.customer_data;
+
+select gender, 100*count(*)/(select count(*) from sessionwithsumit.churn_data_u where churn = 'No') as pct
+from sessionwithsumit.customer_data
+where customer_id in (select customer_id 
+from sessionwithsumit.churn_data_u
+where churn = 'No')
+group by gender;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select department_id, avg(salary), count(*)
+from sessionwithsumit.employees_data
+group by department_id
+order by count(*) desc;
+
+
+
+-- Find the total number of employees working in those departments
+-- where avg_salary is more than 10000
+
+select sum(x.cnt)
+from(
+select department_id, avg(salary) as avg_sal, count(*) as cnt
+from sessionwithsumit.employees_data
+group by department_id
+having avg(salary)>10000
+order by count(*) desc) x ;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Find the number of customers who are using those internet service which are having
+-- avg_tenure more than 35. Consider non-churn customers.
+
+select sum(x.cnt)
+from (
+select b.internet_service, avg(a.tenure) as avg_tenure, count(*) as cnt
+from sessionwithsumit.churn_data_u a 
+inner join sessionwithsumit.internet_data b 
+on a.customer_id = b.customer_id
+where a.churn = 'No'
+group by b.internet_service
+having avg(a.tenure)>35) x;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+select * from sessionwithsumit.employees_data;
+select * from sessionwithsumit.department_data;
+select * from sessionwithsumit.locations_data_u;
+
+-- Find country_id  wise number of managers.
+
+select c.country_id, count(*)
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id 
+inner join sessionwithsumit.locations_data_u c 
+on b.location_id = c.location_id
+where a.employee_id in (select manager_id from sessionwithsumit.employees_data)
+group by c.country_id;

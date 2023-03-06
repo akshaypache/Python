@@ -1,0 +1,52 @@
+-- Using table
+-- SELECT * from tutorial.sat_scores
+
+-- 1) Find the minimum marks in sat_verbal in the dataset
+-- SELECT min(sat_verbal)
+-- from tutorial.sat_scores
+
+-- SELECT min(sat_verbal),max(sat_verbal),SUM(sat_verbal),COUNT(sat_verbal),AVG(sat_verbal)  from tutorial.sat_scores
+
+-- 2) Find the maximum marks in sat_writing in the dataset
+-- SELECT MAX(sat_writing)
+-- from tutorial.sat_scores
+
+
+-- 3) Find the count of students in the dataset
+-- SELECT COUNT(student_id)
+-- FROM tutorial.sat_scores
+
+-- 4) Find the average marks in sat_math in the dataset
+-- SELECT AVG(sat_math)
+-- FROM tutorial.sat_scores
+
+-- 5) Find the sum of hrs_studied in the dataset
+-- SELECT sum(hrs_studied)
+-- FROM tutorial.sat_scores
+
+-- 6) Find the list of unique schools in the data using Group by clause
+-- SELECT school 
+-- from tutorial.sat_scores
+-- GROUP BY 1
+
+-- 7) Find the list of unique school and teachers in the data using Group by clause
+-- SELECT school,teacher 
+-- FROM  tutorial.sat_scores
+-- GROUP BY 1,2
+
+-- 8) Find the total number of hours studied per school
+-- SELECT school, COUNT(hrs_studied)
+-- FROM tutorial.sat_scores
+-- GROUP BY school
+
+-- 9) Find the number of students in each school
+-- SELECT school, COUNT(student_id)
+-- FROM tutorial.sat_scores
+-- GROUP BY 1
+
+-- 10) Find the average marks scored in sat_writing per teacher for the school 'Petersville HS’.
+
+-- 11) Find the maximum marks scored in sat_math per teacher for the school Washington HS’.
+-- 12) Find the list of unique school and teachers in the data using Group by clause and sort it by ascending order for school and descending order for teacher name
+-- 13) Find the list of all the teachers along with the minimum marks scored by their students in sat_verbal. Only consider those teachers where minimum marks is more than 220
+-- 14) Find the first 5 rows of the data

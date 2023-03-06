@@ -1,0 +1,132 @@
+-- Strings
+-- Joins  - Self Join
+-- Lead and Lag
+-- Datetime Function
+-- Pivot 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from sessionwithsumit.employees_data;
+
+-- Return the following details for all the customers
+-- Full Name | Email_id(email_phone number@abc.com) | Year of hire date | salary-18*gst | Departmnet_Name
+
+select concat(a.first_name, ' ', a.last_name) as full_name,
+concat(lower(email),'_',split_part(a.phone_number, '.',1),'@abc.com' ) as email_id, extract(year from hire_date) as hire_date,
+salary*0.82 as salary_without_gst, b.department_name 
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id;
+
+select split_part(phone_number, '.', 3)
+from sessionwithsumit.employees_data;
+
+select * from sessionwithsumit.employees_data;
+select substr(phone_number, 1,3)
+from sessionwithsumit.employees_data;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find the following details for all the customers
+-- Full_Name | Salary | Department_Name | Manager_Name | Manger_Salary | Difference b/w manager and employee_salary
+
+select concat(a.first_name, ' ', a.last_name) as employee_name, a.salary as employee_sal, b.department_name, 
+concat(c.first_name, ' ', c.last_name) as manager_name, c.salary as manager_salary, c.salary - a.salary as diff_sal
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.department_data b 
+on a.department_id = b.department_id
+inner join sessionwithsumit.employees_data c 
+on a.manager_id = c.employee_id;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Find Manager Name Wise total number of employees working under him/her and his/her salary.
+
+select *
+from sessionwithsumit.employees_data
+where employee_id in (select manager_id 
+from sessionwithsumit.employees_data);
+
+select concat(b.first_name, ' ', b.last_name) as manager_name, count(*) as cnt_emp, max(b.salary) as manager_sal
+from sessionwithsumit.employees_data a 
+inner join sessionwithsumit.employees_data b 
+on a.manager_id =b.employee_id
+group by 1;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- 
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- Find Week Day Wise Total number of orders and avg order value.
+
+select extract(dow from b.time) as day_of_week, count(*) as number_of_orders, avg(a.price_unit) as avg_order_value
+from tutorial.excel_sql_inventory_data a 
+inner join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id
+group by 1;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from benn.college_football_players;
+select * from benn.college_football_teams;
+
+-- Find the school_name wise number of players, Avg_height and weight
+
+select school_name, avg(height), avg(weight)
+from benn.college_football_players
+GROUP by 1;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from tutorial.excel_sql_inventory_data;
+select * from tutorial.excel_sql_transaction_data;
+
+-- According to the Ecommerce company, 
+-- if a product is not ordered for even 1 time, it's a l0 product
+-- if a product is ordered for  1 time, then it's a l1 product
+-- >1 but <=5 l2
+-- >5 l3
+-- Find the avg order value for each product level and the highest priced product under each level.
+
+select *
+from (
+select y.level_, y.price_unit, y.product_name, avg(price_unit) over(partition by y.level_) as avg_price,
+row_number() over(partition by y.level_ order by y.price_unit desc) as rn
+from (
+select *,
+case 
+  when x.cnt=0 then 'l0'
+  when x.cnt=1 then 'l1'
+  when x.cnt>1 and x.cnt<=5 then 'l2'
+  else 'l3'
+end as level_
+from (
+select *, count(b.product_id) over(partition by b.product_id) as cnt
+from tutorial.excel_sql_inventory_data a 
+left join tutorial.excel_sql_transaction_data b 
+on a.product_id = b.product_id) x) y) z 
+where z.rn =1;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select * from tutorial.dc_bikeshare_q1_2012;
+
+-- For each start_terminal find the bike number that was booked for highest number of times.
+
+select z.start_terminal, z.bike_number, z.cnt
+from (
+select *, row_number() over(partition by y.start_terminal) as rn
+from (
+select *, max(x.cnt) over(partition by x.start_terminal) as max_cnt
+from (
+select *, count(*) over(partition by start_terminal, bike_number) as cnt
+from tutorial.dc_bikeshare_q1_2012) x ) y 
+where y.cnt = y.max_cnt) z 
+where z.rn=1;

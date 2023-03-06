@@ -1,0 +1,114 @@
+site -- dbfiddle
+
+-- Find the number of rows for each of the table.
+select count(*) from dbo.sales;
+select count(*) from dbo.members;
+select count(*) from dbo.menu;
+
+-- What is total amount each customer has spent in the resturant.
+select a.customer_id, sum(b.price) as total_spent
+from dbo.sales a 
+inner join dbo.menu b 
+on a.product_id = b.product_id
+group by a.customer_id
+order by 2 desc;
+
+-- How many time a customer has visited the resturant?
+select customer_id, count(distinct order_date)
+from dbo.sales
+group by customer_id;
+
+-- What was the first item purchased by each customers.
+
+select x.customer_id, x.order_date, x.product_name
+from (
+select *, 
+rank() over(partition by customer_id order by order_date) as rnk
+from dbo.sales a 
+inner join dbo.menu b 
+on a.product_id = b.product_id) x 
+where x.rnk =1;
+
+-- What is most purchased item in the menu and how many times,
+-- it was purchased?
+
+select b.product_name , count(*)
+from dbo.sales a 
+inner join dbo.menu b 
+on a.product_id = b.product_id
+group by b.product_name
+order by 2 desc
+limit 1;
+
+-- Which item is most popular for each customer?
+
+select *
+from (
+select *, 
+rank() over(partition by x.customer_id order by cnt desc) as rnk
+from (
+select a.customer_id, b.product_name, count(*) as cnt
+from dbo.sales a
+inner join dbo.menu b 
+on a.product_id = b.product_id
+group by a.customer_id, b.product_name) x ) y 
+where y.rnk = 1;
+
+-- Which item was purchased first by the customer after becoming a
+-- a member
+
+select *
+from (
+select x.customer_id, x.order_date, x.product_name,
+rank() over(partition by x.customer_id order by x.order_date) as rnk
+from (
+select a.customer_id, a.order_date, b.product_name
+from dbo.sales a 
+inner join dbo.menu b 
+on a.product_id = b.product_id
+inner join dbo.members c 
+on a.customer_id = c.customer_id
+where a.order_date>=c.join_date) x) y
+where y.rnk=1;
+
+-- Which item was purchased right before the customer became a memeber
+
+select *
+from (
+select *, 
+rank() over(partition by x.customer_id order by x.order_date desc) as rnk
+from (
+select a.customer_id, a.order_date, b.product_name
+from dbo.sales a 
+inner join dbo.menu b 
+on a.product_id = b.product_id
+inner join dbo.members c 
+on a.customer_id = c.customer_id
+where a.order_date < c.join_date) x) y
+where y.rnk=1;
+
+-- What is the total number of items and amount spent for each memeber
+-- before they became member
+select x.customer_id, count(*), sum(x.price)
+from (
+select a.customer_id, b.price
+from dbo.sales a 
+inner join dbo.menu b 
+on a.product_id = b.product_id 
+inner join dbo.members c 
+on a.customer_id = c.customer_id
+where a.order_date<c.join_date) x
+group by x.customer_id;
+
+-- If each customers $1 spent is equivalent to 10 points and 
+-- sushi has a 20 points on each $1 spent
+-- Find the total points each customer has gained.
+select x.customer_id, sum(x.points)
+from (
+select *, 
+case when b.product_name ='sushi' then price*20
+else price*10 end as points
+from dbo.sales a 
+inner join dbo.menu b 
+on a.product_id = b.product_id) x
+group by x.customer_id;
