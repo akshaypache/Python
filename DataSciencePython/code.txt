@@ -1,9 +1,58 @@
-import ast 
-input_str = input("Enter a events list = ")
-inputList = ast.literal_eval(input_str)
+-- SELECT * FROM relevel.002operator; 
 
-lst = inputList[0]
-k = inputList[1]
+-- Data Manipulation in SQL
+-- SELECT * from relevel.002operator
 
-for i in range(0, len(lst), k):
-    print(lst[i:i+k])
+-- 1) Find the list of unique country codes in the data 
+select distinct country_code 
+from relevel.002operator
+
+-- 2) Find the list of all the companies founded in or after 2009
+-- SELECT name 
+-- FROM relevel.002operator 
+-- where founded_year >= 2009
+
+-- 3) Find the list of all the companies founded before 2015 and have received funding of at least 1 Mn USD
+-- select name
+-- from relevel.002operator 
+-- where founded_year < 2015 and funding_total_usd >= 1000000
+
+-- 4) Find the list of all the companies that has funding between 3 to 6 rounds
+-- select name 
+-- from relevel.002operator
+-- where funding_rounds between 3 and 6
+
+-- 5) Find the list of all the companies founded in India(IN), the USA(USA), and the Great Britain(GBR)
+-- select name 
+-- from relevel.002operator
+-- where country_code in ('IN','USA','GBR')
+
+-- 6) Find the list of all the companies which are either acquired or operating
+-- select name
+-- from relevel.002operator
+-- where status in ('acquired', 'operating')
+
+-- 7) Find the list of all the companies starting with the letter S
+-- select name
+-- from relevel.002operator
+-- where upper(name) like 'S%'
+
+-- 8) Find the list of all the companies founded in the city containing word ‘Park’
+-- select name, city
+-- from relevel.002operator
+-- where lower(city) like 'park%' or lower(city) like '%park' or lower(city) like '%park%'
+
+-- 9) Find the list of all the companies which are operated outside the USA(USA), Australia(AUS), and Argentina(ARG)
+-- select name
+-- from relevel.002operator
+-- where country_code not in ('USA','AUS','ARG')
+
+-- 10) Find the list of all the companies founded after 2015 or have received funding of at least 1 Mn USD
+-- select name
+-- from relevel.002operator 
+-- where founded_year < 2015 or funding_total_usd >= 1000000
+
+-- 11) Find the list of unique country codes in the data excluding the null values 
+-- select distinct country_code
+-- from relevel.002operator 
+-- where country_code IS NOT null
