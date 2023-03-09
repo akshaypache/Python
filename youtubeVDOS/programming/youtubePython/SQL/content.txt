@@ -1,4 +1,4 @@
-1) what is database?
+Q) what is database?
 A database is a structured collection of data that is stored and organized in a way that allows for efficient retrieval and manipulation of information. It is designed to manage large amounts of information by providing a central location for storing, managing, and retrieving data.
 
 A database typically includes tables or collections of related data, each with their own fields or attributes. These tables can be related to each other through keys, allowing for the creation of more complex relationships and queries.
@@ -8,7 +8,7 @@ Databases are used in many applications, from simple data storage to complex bus
 
 
 
-Q) what is database management system
+Q) what is database management system?
 A database management system (DBMS) is software that allows for the creation, maintenance, and use of a database. It provides a set of tools and functions to manage data in a way that is efficient, reliable, and secure.
 
 A DBMS typically includes features such as data definition, data manipulation, data retrieval, and security management. Data definition allows users to define the structure of the database, including tables, fields, and relationships. Data manipulation allows users to insert, update, and delete data in the database. Data retrieval allows users to search for and retrieve specific data from the database. Security management allows users to control access to the database, ensuring that only authorized users can view or modify data.
@@ -18,7 +18,7 @@ There are many types of DBMSs, including relational DBMSs, NoSQL DBMSs, object-o
 
 
 
-Q) benefits ok DBMS
+Q) What are benefits of DBMS?
 There are many benefits to using a database management system (DBMS), including:
 
 1. Data integrity and consistency: DBMSs are designed to ensure data integrity and consistency, which means that data is accurate, complete, and consistent across the entire database. This is achieved through various features such as data validation, data normalization, and data constraints.
@@ -36,7 +36,7 @@ Overall, DBMSs provide a centralized and efficient way to manage data, improving
 
 
 
-Q) what is relational database management system
+Q) what is relational database management system?
 A relational database management system (RDBMS) is a type of database management system that is based on the relational data model. In this model, data is organized into tables, with each table representing a specific type of entity, such as customers or orders. Each row in the table represents an instance of the entity, and each column represents a specific attribute or property of that entity.
 
 RDBMSs use a structured query language (SQL) to manipulate and retrieve data from tables. SQL allows for complex queries to be created that can join multiple tables together, filter data based on specific criteria, and perform calculations on the data.
@@ -48,7 +48,7 @@ The relational data model and RDBMSs have been a dominant force in data manageme
 
 
 
-Q) codd's rule for RDBMS
+Q) What is codd's rule for RDBMS?
 Codd's rules for relational database management systems (RDBMS) were developed by Dr. E.F. Codd, the inventor of the relational database model. The rules are a set of guidelines that outline the characteristics that a DBMS must have to be considered a true RDBMS. The twelve rules are as follows:
 
 1. Foundation Rule: The system must be relational, meaning that data must be represented in tables, with each table having a unique name.
@@ -80,7 +80,7 @@ Adherence to these rules ensures that a database management system is truly rela
 
 
 
-Q) DBMS vs RDBMS
+Q) What is DBMS vs RDBMS?
 A database management system (DBMS) is a software system that allows for the creation, maintenance, and use of a database, while a relational database management system (RDBMS) is a type of DBMS that is based on the relational data model.
 
 Here are some key differences between a DBMS and an RDBMS:
@@ -100,7 +100,7 @@ Overall, an RDBMS is a specific type of DBMS that is designed to handle data tha
 
 
 
-Q) normalization in SQL?
+Q) What is normalization in SQL?
 Normalization is a process used in database design to eliminate data redundancy and improve data integrity. It involves breaking down a database into smaller, more manageable parts, and then organizing those parts based on their logical relationships.
 
 There are several levels of normalization, referred to as normal forms, with each level building on the previous one. The most commonly used levels of normalization are:
@@ -118,7 +118,7 @@ Normalization is important because it reduces data redundancy, which saves stora
 
 
 
-Q) introduction to oracle 
+Q) introduction to oracle ?
 Oracle is a leading provider of enterprise-level database software and technology, as well as cloud-based software and services. The company was founded in 1977 by Larry Ellison, Bob Miner, and Ed Oates, and has grown to become one of the largest software companies in the world.
 
 Oracle's flagship product is the Oracle Database, which is a relational database management system (RDBMS) that is used to manage large amounts of structured data. The Oracle Database is known for its scalability, reliability, and security, and is used by many of the world's largest organizations.
@@ -138,7 +138,7 @@ Oracle's products and services are used by a wide range of industries, including
 
 
 
-Q) intoduction to SQL
+Q) intoduction to SQL?
 SQL (Structured Query Language) is a programming language that is used to manage and manipulate relational databases. SQL is used to perform various operations on the data stored in a database, such as retrieving data, updating data, inserting data, and deleting data.
 
 SQL was first developed in the 1970s by IBM researchers Donald Chamberlin and Raymond Boyce. Since then, it has become a standard language for relational database management systems (RDBMS), such as Oracle, MySQL, Microsoft SQL Server, and PostgreSQL.
@@ -164,7 +164,7 @@ SQL is used by database administrators, developers, data analysts, and other pro
 
 
 
-Q) oracle data type
+Q) What are oracle data type?
 Oracle provides several built-in data types that can be used to define columns in a table. The following are some of the commonly used data types in Oracle:
 
 1. NUMBER: This data type is used to store numeric values, such as integers, floating-point numbers, and decimal numbers.
@@ -188,7 +188,7 @@ In addition to these built-in data types, Oracle also provides several user-defi
 
 
 
-Q) basic data types
+Q) What are basic data types?
 Basic data types are the fundamental building blocks of any programming language, including database management systems. The following are some of the commonly used basic data types:
 
 1. Integer: This data type is used to represent whole numbers. Integers can be signed or unsigned, and the range of values that can be stored depends on the number of bits used to represent them.
@@ -208,7 +208,7 @@ In addition to these basic data types, many programming languages and database m
 
 
 
-Q) DML
+Q) What is DML?
 DML stands for Data Manipulation Language, which is a subset of SQL used to modify, insert, delete, and update data in a database. DML commands are used to manipulate the data stored in tables, views, and other database objects. Some of the commonly used DML commands are:
 
 1. SELECT: This command is used to retrieve data from one or more tables.
@@ -224,7 +224,7 @@ DML commands are used in conjunction with other SQL commands, such as CREATE, DR
 
 
 
-Q) DDL
+Q) What is DDL?
 DDL stands for Data Definition Language, which is a subset of SQL used to define and manage the structure of a database. DDL commands are used to create, modify, and delete database objects, such as tables, indexes, views, and stored procedures. Some of the commonly used DDL commands are:
 
 1. CREATE: This command is used to create a new database object, such as a table or index.
@@ -240,7 +240,7 @@ DDL commands are used to define the structure of a database and are executed onl
 
 
 
-Q) TCL
+Q) What is TCL?
 TCL stands for Transaction Control Language, which is a subset of SQL used to manage transactions in a database. Transactions are a sequence of one or more SQL statements that are executed as a single unit of work. TCL commands are used to manage transactions, by committing or rolling back changes made to a database. Some of the commonly used TCL commands are:
 
 1. COMMIT: This command is used to save changes made to a database during a transaction.
@@ -256,9 +256,9 @@ TCL commands are an essential part of any database management system, as they en
 
 
 
-Q) DRL
+Q) What is DRL?
 DRL stands for Data Retrieval Language, which is a subset of SQL used to retrieve data from a database. DRL commands are used to query the database and retrieve specific information that meets certain criteria. The most commonly used DRL command is:
 
-1. SELECT: This command is used to retrieve data from one or more tables based on specified conditions.
+SELECT: This command is used to retrieve data from one or more tables based on specified conditions.
 
 DRL commands are typically used by developers and data analysts to extract data from a database for further analysis or processing. The SELECT command can be used with various clauses, such as WHERE, ORDER BY, GROUP BY, and HAVING, to refine the query results and extract the desired information. Other DRL commands, such as JOIN and UNION, can be used to combine data from multiple tables or queries.

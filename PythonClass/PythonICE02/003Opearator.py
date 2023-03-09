@@ -162,7 +162,3 @@ a = 10
 # print("The area of circle is :",3.14*(Radius)**2)
 
 
-
-
-
-
