@@ -1,1 +1,1 @@
-tech-in-seconds
+tech_in_seconds
