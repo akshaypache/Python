@@ -1,14 +1,6 @@
-tallies = {
-    'I': 1,
-    'V': 5,
-    'X': 10,
-    'L': 50,
-    'C': 100,
-    'D': 500,
-    'M': 1000,
-}
-
 def RomanToDecimal(romanNumeral):
+    romanNumeral = romanNumeral.upper()
+    tallies = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
     sum = 0
     for i in range(len(romanNumeral) - 1):
         left = romanNumeral[i]
@@ -20,5 +12,5 @@ def RomanToDecimal(romanNumeral):
     sum += tallies[romanNumeral[-1]]
     return sum
 
-a = RomanToDecimal("iii".upper())
+a = RomanToDecimal("xxx")
 print(a)

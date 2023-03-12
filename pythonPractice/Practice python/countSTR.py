@@ -1,8 +1,5 @@
 def CountAll(string):
-    lower = 0
-    upper = 0
-    number = 0
-    symbol = 0
+    lower = upper = number = symbol = space = 0
     for char in string:
         if char.islower():
             lower = lower + 1
@@ -10,11 +7,13 @@ def CountAll(string):
             upper = upper + 1
         elif char.isdigit():
             number = number+ 1
+        elif char== " ":
+            space = space + 1
         else:
             symbol = symbol + 1
 
-    return {"lower":lower, "upper":upper,"number":number, "symbol":symbol}
+    return {"lower":lower, "upper":upper,"number":number, "symbol":symbol,"space":space}
     
 
 a = CountAll("Aadesh@123")
-print(a["upper"])
+print(a)
