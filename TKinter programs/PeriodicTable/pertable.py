@@ -77,7 +77,6 @@ def myinfo():
 
 for element in eleList:
     dic = agl.chemEleInfo(element)
-    print(dic['row'],dic['col'])
     button = tk.Button(
                 mainframe,
                 text=f"{element}\n{dic['Name']}",

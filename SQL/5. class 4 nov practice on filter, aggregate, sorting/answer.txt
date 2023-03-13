@@ -45,3 +45,62 @@ where lower(nominee) like 'a%' and lower(nominee) like '%r'
 select *
 from relevel.003oscar
 where lower(movie) NOT LIKE 'a%' AND lower(movie) NOT LIKE 'c%' AND year = 2005 AND winner = 'true'
+
+
+*********************************** caselet 2 *********************************************
+-- select * from relevel.004caselet
+
+-- 1) Write a query to count the total number of records in the tutorial.kag_conversion_data dataset.
+select count(*) 
+from relevel.004caselet
+
+-- 2) Write a query to count the distinct number of fb_campaign_id
+select count(distinct fb_campaign_id)
+from relevel.004caselet
+
+-- 3) Write a query to find the maximum spent, average interest, minimum impressions for ad_id.
+select ad_id,max(spent), avg(interest), min(impressions)
+from relevel.004caselet
+group by ad_id
+
+-- 4) Write a query to create an additional column spent per impressions(spent/impressions)
+select *,spent/impressions as spent_per_impressions
+from relevel.004caselet
+
+-- 5) Write a query to count the ad_campaign for each age group.
+select age, count(ad_id)
+from relevel.004caselet
+group by age
+
+-- 6) Write a query to calculate the average spent on ads for each gender category.
+select gender, avg(spent)
+from relevel.004caselet
+group by gender
+
+-- 7) Write a query to find the total approved conversion per xyz campaign id. Arrange the total conversion in descending order
+select xyz_campaign_id, sum(approved_conversion)
+from relevel.004caselet
+group by 1
+order by 2 DESC
+
+-- 8) Write a query to show the fb_campaign_id and total interest per fb_campaign_id. Only show the campaign which has more than 300 interests.
+select fb_campaign_id, SUM(interest)
+from relevel.004caselet
+group by fb_campaign_id
+having sum(interest) > 300
+order by 2 desc
+
+-- 9) Write a query to find the age and gender segment with maximum impression to interest ratio. Return three columns - age, gender, impression_to_interest.
+select age, gender , sum(impressions)/sum(interest)
+from relevel.004caselet
+group by 1, 2
+order by 3 desc
+limit 1
+
+-- 10) Write a query to find the top 2 xyz_campaign_id and gender segment with the maximum total_unapproved_conversion (total_conversion - approved_conversion).
+select xyz_campaign_id, gender ,  SUM(total_conversion - approved_conversion) as total_unapproved_conversion
+from relevel.004caselet
+group by 1, 2
+order by 3 desc
+limit 2
+
