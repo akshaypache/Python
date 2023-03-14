@@ -23,7 +23,7 @@ def WriteText(text,y,fileName="abc1.png",fontsize=23,x=True):
     img.save("abc1.png")
 
 
-WriteText("Authorized Training Center",280,"certificate.jpg")
+WriteText("Authorized Training Center",280,"sample.png")
 WriteText("ICE COMPUTERS",310)
 WriteText("Wanadongri",335)
 WriteText("This is to certify that",460,fontsize=18)
