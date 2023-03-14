@@ -2,7 +2,7 @@ import calendar
 from datetime import datetime
 import os 
 
-os.system("pip install python-telegram-bot")
+# os.system("pip install python-telegram-bot")
 try:
     import cryptocompare
 except:
@@ -74,9 +74,6 @@ try:
 except:
     os.system("pip install translate")
     from translate import Translator
-
-# from pythonLearn import python
-# from PyDictionary import PyDictionary
 
 
 def navigat(input_text):
@@ -162,45 +159,7 @@ def sample_responses(input_text,msgSenderData):
             return str(wikipedia.summary(word))
         except:
             return "Wrong Input\ntype: wiki <anytopic>\nExample:- wiki tajmahal"
-    
-    # if "mean" in user_message:
-    #     dictionary=PyDictionary()
-    #     word = user_message[5:]
-    #     word = str(TextBlob(word).correct())
-    #     mean = dictionary.meaning(word)
-    #     ac, vc, nc = 1,1,1
-    #
-    #     full_sentense = ""
-    #
-    #     if str(dictionary.meaning(word))!="None":
-    #         try:
-    #             full_sentense = full_sentense + "Noun : "
-    #             for noun in mean["Noun"]:
-    #                 full_sentense = full_sentense + "\n"+ str(nc)+") "+noun
-    #                 nc = nc + 1
-    #             full_sentense = full_sentense + "\n"
-    #         except:
-    #             full_sentense = full_sentense + "N\\A\n"
-    #         try:
-    #             full_sentense = full_sentense + "\n"+ "Adjective : "
-    #             for ad in mean["Adjective"]:
-    #                 full_sentense = full_sentense + "\n"+ str(ac)+") "+ad
-    #                 ac = ac + 1
-    #             full_sentense = full_sentense + "\n"
-    #         except:
-    #             full_sentense = full_sentense + "N\\A\n"
-    #         try:
-    #             full_sentense = full_sentense + "\n"+ "Verb : "
-    #             for verb in mean["Verb"]:
-    #                 full_sentense = full_sentense + "\n"+ str(vc)+") "+verb
-    #                 vc = vc + 1
-    #             full_sentense = full_sentense + "\n"
-    #         except:
-    #             full_sentense = full_sentense + "N\\A\n"
-    #         return(f"Word : {word.upper()}\n\n{full_sentense}")
-    #     else:
-    #         return(f"\"{word}\" \nWord not Found")
-    #
+
     if "big" in user_message:
         word = user_message[4:]
         return pyfiglet.figlet_format(word)

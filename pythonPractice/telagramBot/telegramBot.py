@@ -1,4 +1,5 @@
-from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
+from telegram.ext import *
+
 
 import constants as key
 import Responses as Res
@@ -61,7 +62,7 @@ def main():
     dp.add_handler(CommandHandler("start", start_command))
     dp.add_handler(CommandHandler("help", help_command))
 
-    dp.add_handler(MessageHandler(Filters.text, handle_command))
+    dp.add_handler(MessageHandler(filter.Filters.text, handle_command))
 
     dp.add_error_handler(error)
     updater.start_polling()

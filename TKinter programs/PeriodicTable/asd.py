@@ -1,4 +1,3 @@
-from tech_in_seconds import agl
-
+from TechInSeconds import agl
 a = agl.mean("moon")
 print(a)

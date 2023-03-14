@@ -1,0 +1,8 @@
+LICENCE
+setup.py
+TechInSeconds/__init__.py
+TechInSeconds/agl.py
+TechInSeconds.egg-info/PKG-INFO
+TechInSeconds.egg-info/SOURCES.txt
+TechInSeconds.egg-info/dependency_links.txt
+TechInSeconds.egg-info/top_level.txt
