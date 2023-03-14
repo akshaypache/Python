@@ -12,12 +12,13 @@ def AddImg(h,w,x=94,y=274):
     img1.paste(img2, (x,y), mask = img2)
     img1.save("abc1.png")
 
-def WriteText(text,y,fileName="abc1.png",fontsize=23):
+def WriteText(text,y,fileName="abc1.png",fontsize=23,x=True):
     img = Image.open(fileName)
     I1 = ImageDraw.Draw(img)
     myFont = ImageFont.truetype('oswald/Oswald-Bold.ttf', fontsize)
-    size = myFont.getsize(text)
-    x = 360-size[0]//2
+    if x==True:
+        size = myFont.getsize(text)
+        x = 360-size[0]//2
     I1.text((x, y), text=text,font=myFont, fill =(0, 0, 0))
     img.save("abc1.png")
 
@@ -36,8 +37,8 @@ WriteText("certificate Number",690,fontsize=14)
 WriteText("2000010001",710,fontsize=14)
 WriteText("Date : 10/04/2000",730,fontsize=14)
 
-WriteText("APC",125,385,fontsize=18)
-WriteText("MH4023001",110,405, fontsize=14)
+WriteText("APC",385,x=125,fontsize=18)
+WriteText("MH4023001",405,x=110, fontsize=14)
 
 
 AddImg(94,94,x=94,y=274)
