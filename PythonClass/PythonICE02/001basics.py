@@ -1,7 +1,15 @@
+# print("Aadesh" , end=" Akshay ")
+# print("Lokhande")
+# print("abrakadabra")
+
+# print("aadesh", 12,23,54.765)
+
 # print(23,12,43.54,"hello",sep="-")
 
 # print("Hello")
-# print("World")
+# print("H\tELLO W\norld")
+
+
 # escape char
 # \n = new line 
 # \t = horizontal tab
@@ -9,8 +17,7 @@
 # print("Hello \nw\torld")
 # print("Hello",end="")
 # print("World")
-
-
+# ************************************************
 # keywords - reserve words
 # import keyword
 # print(keyword.kwlist)

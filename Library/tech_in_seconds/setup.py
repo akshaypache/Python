@@ -10,7 +10,7 @@ setup(
     name="Tech_In_Seconds",
     author="Aadesh Lokhande",
     author_email="aadeshlokhande11@gmail.com",
-    version="1.0.2",
+    version="1.0.3",
     description=DESCRIPTION,
     long_description_content_type="text/markdown",
     long_description=LONG_DESCRIPTION,
@@ -26,3 +26,6 @@ setup(
         "Operating System :: Microsoft :: Windows",
     ]
 )
+# https://github.com/Avinash6798/avi_package
+# python setup.py sdist bdist_wheel
+# twine upload dist/*

@@ -60,10 +60,21 @@ def Submit():
     shutil.copyfile(uploadSignPath, f"{date}/sign.png")
 
 
+    fNameEntryVar.set("")
+    mNameEntryVar.set("")
+    lNameEntryVar.set("")
+    courseEntryVar.set("")
+    fromEntryVar.set("")
+    toEntryVar.set("")
+    gradeEntryVar.set("")
+    phoneEntryVar.set("")
+    emailEntryVar.set("")
+    adharEntryVar.set("")
+    photoLbl.configure(text="Passport Photo")
+    signLbl.configure(text="Sign")
 
 
-
-root = Tk()
+root = Tk(className = " ALL INDIA PROFESSIONAL SKILL CERTIFICATION COUNCIL")
 # root.resizable(0,0)
 headF = Frame(root,relief=SUNKEN,padding=20)
 headF.pack(fill = X, expand = False,anchor="ne")
@@ -131,11 +142,11 @@ toEntry.grid(row=1,column=1)
 
 
 
-# gradeLbl = Label(bodyLeftFram, text = "Grade",font=("Bold",15))
-# gradeLbl.pack(fill = BOTH, expand = True)
-# options = ["Select Grade","A Grade","B Grade","C Grade","D Grade","A+ Grade","B+ Grade","C+ Grade","D+ Grade",]
-# gradeEntry = OptionMenu(bodyLeftFram, *options,direction="right")
-# gradeEntry.pack(fill = BOTH, expand = True)
+gradeLbl = Label(bodyLeftFram, text = "Grade",font=("Bold",15))
+gradeLbl.pack(fill = BOTH, expand = True)
+options = ["Select Grade","A Grade","B Grade","C Grade","D Grade","A+ Grade","B+ Grade","C+ Grade","D+ Grade",]
+gradeEntry = OptionMenu(bodyLeftFram,gradeEntryVar, *options,direction="right")
+gradeEntry.pack(fill = BOTH, expand = True)
 
 phoneLbl = Label(bodyRightFram, text = "Phone",font=("Bold",15))
 phoneLbl.pack(fill = BOTH, expand = True)
@@ -174,3 +185,4 @@ submit_button.grid(row=2,column=1,padx=10,pady=10)
 
 
 root.mainloop()
+
