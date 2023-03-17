@@ -1,5 +1,5 @@
 import tkinter as tk
-from tech_in_seconds import agl
+from Tech_In_Seconds import agl
 
 eleList = agl.AllChemElements()
 root = tk.Tk()

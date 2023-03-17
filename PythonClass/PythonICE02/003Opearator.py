@@ -76,12 +76,6 @@ a = 10
 
 
 
-
-
-
-
-
-
 # ==================================
 # bis = int(input("enter number of  bis = "))
 # eat = bis // 6

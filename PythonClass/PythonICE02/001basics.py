@@ -26,11 +26,21 @@
 # a = ['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with','yield']
 # print(len(a))
 
-
 # comments - notes
 
 # printing hello world
 # print("Hello world")
+
+# control + '/'
+
+# """
+# asdasdasdasd
+# asdasdasdasd
+# asdasdasdasd
+# asdasdasdsad
+# """
+
+# print(a)
 
 # a = """
 # printing hello world
@@ -47,3 +57,11 @@
 
 
 # 7058 232 826 - Aadesh Lokhande 
+
+
+# akshay bhai kaise ho 
+
+# web - django
+# android - kivy
+# windows - tkinter 
+# scrapping = bs4
