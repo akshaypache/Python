@@ -35,7 +35,7 @@ def Clear():
 
 def Submit():
     now = datetime.now()
-    date = now.strftime("%m%B%Y")
+    date = now.strftime("%d%B%Y")
     try:
         os.mkdir(date)
     except:
