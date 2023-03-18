@@ -1,3 +1,4 @@
+# sum two
 import ast 
 Input = input("Input = ")
 Target = int(input("Target = "))
