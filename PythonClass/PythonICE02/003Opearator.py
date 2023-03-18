@@ -39,31 +39,33 @@
 # print(a == b )
 # print(a != b)
 
+
 # *************** assignment operator ***************
-a = 10
+# a = 10
 # b = a
 
 # a = a + 2
 # print(a)
 
 # a += 2
-# print(a)
+# print(a)            # 12
 # a -= 2
-# print(a)
+# print(a)            # 10
 # a *= 2
-# print(a)
+# print(a)            # 20
 # a /= 2
-# print(a)
+# print(a)            # 10
 # a **= 2
-# print(a)
+# print(a)            # 100
 # a //= 2
-# print(a)
+# print(a) #50 
 # print(27.0//5)
 
 # *****************************************************************
 # a = "123123123123"
 # print("23" in a)
 
+# print("e" in "abcd")
 # true  = 1
 # false = 0
 
@@ -140,8 +142,7 @@ a = 10
 # print("Modulous of two numbers is:",a%b)
 # print("a divided by  b is given by:",a/b)
 # print(a//b)
-#
-#
+
 
  # ========== AREA OF Triangle =============
 
