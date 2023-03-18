@@ -1,0 +1,10 @@
+import ast 
+Input = input("Input = ")
+Target = int(input("Target = "))
+List = ast.literal_eval(Input)
+
+list = []
+for i in List:
+    for j in List:
+        if(i+j ==Target):
+            return [i,j]
