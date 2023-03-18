@@ -29,12 +29,13 @@
 # ==============================
 # Methods
 
-# a = "bhAi tUm kAiSe ho"
+a = "bhAi tUm kAiSe ho"
 # print(a)
 # print(a.upper())
 # print(dir(a))
 # print(type(a))
-# print(a.lower())
+# abc=a.lower()
+# print(abc)
 # print(a.capitalize())
 # print(a.title())
 # print(a.find("tUm"))
@@ -74,3 +75,55 @@
 
 
 # print(eval(input("Enter equation = ")))
+
+
+
+# ++++++++++++++++++++++++++++++
+
+# TUPLE - ()
+
+# a = 12,32,43,65,87
+# print(a)
+# print(type(a))
+
+# a = (12,32,43,23.54,43,23.54,43, "hello", "bhai")
+# # print(a[5])
+# print(a.count(43))
+# print(a.index(23.54))
+# print(type(a))
+# print(len(a))
+# print(max(a))
+# print(min(a))
+# print(sum(a))
+# print(dir(a))
+
+
+# =============================
+# list - []
+
+
+# ItemsList = ["sambhar",12, "dahi", "Dudh"]
+# print(ItemsList)
+# ItemsList.append("adrak")
+# print(ItemsList)
+# ItemsList.append("lahsun")
+# print(ItemsList)
+# ItemsList.remove(12)
+# print(ItemsList)
+# ItemsList.pop(2)
+# print(ItemsList)
+# ItemsList.insert(1,"mirchi")
+# print(ItemsList)
+# ItemsList.extend(["masala","Aalu"])
+# print(ItemsList)
+# ItemsList.sort()
+# print(ItemsList[::-1])
+# ItemsList.reverse()
+# print(ItemsList)
+
+
+
+# =============================================
+
+
+
