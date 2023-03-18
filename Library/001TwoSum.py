@@ -7,4 +7,8 @@ list = []
 for i in List:
     for j in List:
         if(i+j ==Target):
-            return [i,j]
+            list.append([i,j])
+print(list) 
+
+
+
